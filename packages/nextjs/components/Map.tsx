@@ -11,6 +11,13 @@ const Map: NextPage = () => {
   // const [lng, setLng] = useState(127);
   // const [lat, setLat] = useState(37.57);
   // const [zoom, setZoom] = useState(11);
+  const description = `
+  <img class="info_image" src="/hole.png"/>
+  <div class="info_box">
+    <div class="info_box_title">서울시 강남구서울시 강남구서울시 강남구</div>
+    <img class="enter_image" src="/right_arrow.png"/>
+  </div>
+`;
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
@@ -30,8 +37,7 @@ const Map: NextPage = () => {
             {
               type: "Feature",
               properties: {
-                description:
-                  "<strong>Make it Mount Pleasant</strong><p>Make it Mount Pleasant is a handmade and vintage market and afternoon of live entertainment and kids activities. 12:00-6:00 p.m.</p>",
+                description,
               },
               geometry: {
                 type: "Point",
@@ -41,8 +47,7 @@ const Map: NextPage = () => {
             {
               type: "Feature",
               properties: {
-                description:
-                  "<strong>Mad Men Season Five Finale Watch Party</strong><p>Head to Lounge 201 (201 Massachusetts Avenue NE) Sunday for a Mad Men Season Five Finale Watch Party, complete with 60s costume contest, Mad Men trivia, and retro food and drink. 8:00-11:00 p.m. $10 general admission, $20 admission and two hour open bar.</p>",
+                description,
               },
               geometry: {
                 type: "Point",
@@ -52,8 +57,7 @@ const Map: NextPage = () => {
             {
               type: "Feature",
               properties: {
-                description:
-                  "<strong>Big Backyard Beach Bash and Wine Fest</strong><p>EatBar (2761 Washington Boulevard Arlington VA) is throwing a Big Backyard Beach Bash and Wine Fest on Saturday, serving up conch fritters, fish tacos and crab sliders, and Red Apron hot dogs. 12:00-3:00 p.m. $25.</p>",
+                description,
               },
               geometry: {
                 type: "Point",
@@ -63,8 +67,7 @@ const Map: NextPage = () => {
             {
               type: "Feature",
               properties: {
-                description:
-                  "<strong>Ballston Arts & Crafts Market</strong><p>The Ballston Arts & Crafts Market sets up shop next to the Ballston metro this Saturday for the first of five dates this summer. Nearly 35 artists and crafters will be on hand selling their wares. 10:00-4:00 p.m.</p>",
+                description,
               },
               geometry: {
                 type: "Point",
@@ -74,8 +77,7 @@ const Map: NextPage = () => {
             {
               type: "Feature",
               properties: {
-                description:
-                  "<strong>Seersucker Bike Ride and Social</strong><p>Feeling dandy? Get fancy, grab your bike, and take part in this year's Seersucker Social bike ride from Dandies and Quaintrelles. After the ride enjoy a lawn party at Hillwood with jazz, cocktails, paper hat-making, and more. 11:00-7:00 p.m.</p>",
+                description,
               },
               geometry: {
                 type: "Point",
@@ -93,7 +95,7 @@ const Map: NextPage = () => {
             {
               type: "Feature",
               properties: {
-                description: "<strong>Event 16</strong><p>Description of Event 16</p>",
+                description,
               },
               geometry: {
                 type: "Point",
@@ -103,7 +105,7 @@ const Map: NextPage = () => {
             {
               type: "Feature",
               properties: {
-                description: "<strong>Event 17</strong><p>Description of Event 17</p>",
+                description,
               },
               geometry: {
                 type: "Point",
@@ -113,7 +115,7 @@ const Map: NextPage = () => {
             {
               type: "Feature",
               properties: {
-                description: "<strong>Event 18</strong><p>Description of Event 18</p>",
+                description,
               },
               geometry: {
                 type: "Point",
@@ -123,7 +125,7 @@ const Map: NextPage = () => {
             {
               type: "Feature",
               properties: {
-                description: "<strong>Event 19</strong><p>Description of Event 19</p>",
+                description,
               },
               geometry: {
                 type: "Point",
@@ -133,9 +135,7 @@ const Map: NextPage = () => {
             {
               type: "Feature",
               properties: {
-                description: `
-                  <button class="test_button" onClick={testHandler}>버튼</button>
-                `,
+                description,
               },
               geometry: {
                 type: "Point",
@@ -153,7 +153,7 @@ const Map: NextPage = () => {
             {
               type: "Feature",
               properties: {
-                description: "<strong>Event 11</strong><p>Description of Event 11</p>",
+                description,
               },
               geometry: {
                 type: "Point",
@@ -163,7 +163,7 @@ const Map: NextPage = () => {
             {
               type: "Feature",
               properties: {
-                description: "<strong>Event 12</strong><p>Description of Event 12</p>",
+                description,
               },
               geometry: {
                 type: "Point",
@@ -173,7 +173,7 @@ const Map: NextPage = () => {
             {
               type: "Feature",
               properties: {
-                description: "<strong>Event 13</strong><p>Description of Event 13</p>",
+                description,
               },
               geometry: {
                 type: "Point",
@@ -183,7 +183,7 @@ const Map: NextPage = () => {
             {
               type: "Feature",
               properties: {
-                description: "<strong>Event 14</strong><p>Description of Event 14</p>",
+                description,
               },
               geometry: {
                 type: "Point",
@@ -193,7 +193,7 @@ const Map: NextPage = () => {
             {
               type: "Feature",
               properties: {
-                description: "<strong>Event 15</strong><p>Description of Event 15</p>",
+                description,
               },
               geometry: {
                 type: "Point",
@@ -290,18 +290,48 @@ const MapWrapper = styled.div`
   }
 
   .mapboxgl-popup {
-    max-width: 400px;
     font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
     .mapboxgl-popup-content {
-      background: rgba(255, 255, 255, 0.1);
-      box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.17);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      max-width: 158px;
+      background: rgba(255, 255, 255, 0.5);
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
       color: white;
-      padding: 30px;
+      padding: 8px;
       border-radius: 20px;
       overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      .info_image {
+        width: 142px;
+        height: 142px;
+        object-fit: cover;
+        border-radius: 10px;
+      }
+      .info_box {
+        margin-top: 8px;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+
+        .info_box_title {
+          color: #000;
+          font-size: 12px;
+          line-height: 24px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .enter_image {
+          width: 24px;
+          height: 24px;
+          object-fit: cover;
+        }
+      }
     }
     .mapboxgl-popup-tip {
       display: none;
