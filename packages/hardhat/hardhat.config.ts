@@ -90,6 +90,18 @@ const config: HardhatUserConfig = {
       accounts: [deployerPrivateKey],
       verifyURL: "https://zksync2-mainnet-explorer.zksync.io/contract_verification",
     },
+    cronos_mainnet: {
+      chainId: 25,
+      url: "https://evm.cronos.org/",
+      accounts: [deployerPrivateKey],
+      //gasPrice: 5000000000000,
+    },
+    cronos_testnet: {
+      chainId: 338,
+      url: "https://evm-t3.cronos.org/",
+      accounts: [deployerPrivateKey],
+      //gasPrice: 5000000000000,
+    },
   },
   verify: {
     etherscan: {
