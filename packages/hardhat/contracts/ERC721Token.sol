@@ -13,7 +13,7 @@ contract ERC721Token is ERC721URIStorage, Ownable{
     address private _registry;
     address private _account; 
     
-    
+    mapping(uint256 => bool) public isActive;
 
     constructor(string memory name, string memory symbol, address registry, address account) ERC721(name, symbol){
         _tokenIds = 0;
@@ -39,11 +39,22 @@ contract ERC721Token is ERC721URIStorage, Ownable{
             seed,
             ""
         );
+        isActive[newItemId] = true;
+
         emit MintNFT(newItemId, accountAddr);
 
 
 
         return newItemId;
+    }
+
+
+    function burnNFT(uint256 _id) external {
+        _burn(_id);
+    }
+
+    function supply() public view returns (uint256){
+        return _tokenIds;
     }
 
     function getAccountAddress(uint256 id, uint256 seed) public view returns (address) {
@@ -58,12 +69,8 @@ contract ERC721Token is ERC721URIStorage, Ownable{
         return accountAddr;
     }
 
-    function burnNFT(uint256 _id) external {
-        _burn(_id);
-    }
-
-    function supply() public view returns (uint256){
-        return _tokenIds;
+    function setActive(uint256 id, bool status) public{
+        isActive[id] = status;
     }
 
     function _beforeTokenTransfer(
