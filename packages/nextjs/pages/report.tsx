@@ -1,7 +1,8 @@
 // import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import Image from "next/image";
-import { Box, Button, Container, TextField } from "@mui/material";
+// import Image from "next/image";
+import TextareaAutosize from "@mui/base/TextareaAutosize";
+import { Box, Button, Container, MenuItem, Select, TextField } from "@mui/material";
 import { styled } from "@mui/system";
 import type { NextPage } from "next";
 import { useDropzone } from "react-dropzone";
@@ -94,6 +95,11 @@ const StyledBox = styled(Box)(props => {
   };
 });
 
+const StyledMenuItem = styled(MenuItem)`
+  // background-color: red;
+  color: white;
+`;
+
 const ExampleUI: NextPage = () => {
   return (
     <>
@@ -113,6 +119,8 @@ export default ExampleUI;
 function CreateNFTWhenContractExist() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [alertLevel, setAlertLevel] = useState(0);
+  const [type, setType] = useState(0);
 
   const [files, setFiles] = useState([]);
 
@@ -143,7 +151,7 @@ function CreateNFTWhenContractExist() {
   const thumbs = files.map(file => (
     <div style={thumb} key={file.name}>
       <div style={thumbInner}>
-        <Image
+        <img
           alt="hello"
           src={file.preview}
           style={img}
@@ -177,6 +185,41 @@ function CreateNFTWhenContractExist() {
         // onSubmit={handleIpfs}
         style={{ display: "flex", flexDirection: "column" }}
       >
+        <TextField label="Name" variant="outlined" value={name} onChange={e => setName(e.target.value)} />
+
+        <TextareaAutosize
+          aria-label="minimum height"
+          minRows={3}
+          placeholder="Description"
+          value={description}
+          onChange={e => setDescription(e.target.value)}
+        />
+
+        <h1>제보 종류</h1>
+
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={alertLevel}
+          label="alertLevel"
+          onChange={e => setAlertLevel(e.target.value)}
+        >
+          <StyledMenuItem value={10}>Ten</StyledMenuItem>
+          <StyledMenuItem value={20}>Twenty</StyledMenuItem>
+          <StyledMenuItem value={30}>Thirty</StyledMenuItem>
+        </Select>
+
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={type}
+          label="Age"
+          onChange={e => setType(e.target.value)}
+        >
+          <StyledMenuItem value={10}>Ten</StyledMenuItem>
+          <StyledMenuItem value={20}>Twenty</StyledMenuItem>
+          <StyledMenuItem value={30}>Thirty</StyledMenuItem>
+        </Select>
         <Button variant="contained" type="submit">
           Create NFT
         </Button>
