@@ -40,9 +40,9 @@ export const Header = () => {
         <NavLink href="/">Home</NavLink>
       </li>
       <li>
-        <NavLink href="/first">
+        <NavLink href="/report">
           <BugAntIcon className="h-4 w-4" />
-          Debug Contracts
+          Report
         </NavLink>
       </li>
       <li>
