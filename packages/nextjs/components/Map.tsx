@@ -1,27 +1,28 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import styled from "@emotion/styled";
 import mapboxgl from "mapbox-gl";
 import type { NextPage } from "next";
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
-const Map: NextPage = ({ setArea }) => {
+const Map: NextPage = () => {
   const map = useRef<mapboxgl.Map | null>(null);
   const mapContainer = useRef<HTMLDivElement | null>(null);
-  const [lng, setLng] = useState(-70.9);
-  const [lat, setLat] = useState(42.35);
-  const [zoom, setZoom] = useState(9);
+  // const [lng, setLng] = useState(127);
+  // const [lat, setLat] = useState(37.57);
+  // const [zoom, setZoom] = useState(11);
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/streets-v12",
-      center: [lng, lat],
-      zoom: zoom,
+      center: [127, 37.57],
+      zoom: 11,
     });
 
     map.current.on("load", () => {
-      map.current.addSource("places", {
+      map.current.addSource("information", {
         type: "geojson",
         data: {
           type: "FeatureCollection",
@@ -34,7 +35,7 @@ const Map: NextPage = ({ setArea }) => {
               },
               geometry: {
                 type: "Point",
-                coordinates: [-77.038659, 38.931567],
+                coordinates: [126.99342, 37.554319],
               },
             },
             {
@@ -45,7 +46,7 @@ const Map: NextPage = ({ setArea }) => {
               },
               geometry: {
                 type: "Point",
-                coordinates: [-77.003168, 38.894651],
+                coordinates: [126.976833, 37.561924],
               },
             },
             {
@@ -56,7 +57,7 @@ const Map: NextPage = ({ setArea }) => {
               },
               geometry: {
                 type: "Point",
-                coordinates: [-77.090372, 38.881189],
+                coordinates: [126.952013, 37.532289],
               },
             },
             {
@@ -67,7 +68,7 @@ const Map: NextPage = ({ setArea }) => {
               },
               geometry: {
                 type: "Point",
-                coordinates: [-77.111561, 38.882342],
+                coordinates: [126.990185, 37.572204],
               },
             },
             {
@@ -78,77 +79,172 @@ const Map: NextPage = ({ setArea }) => {
               },
               geometry: {
                 type: "Point",
-                coordinates: [-77.052477, 38.943951],
+                coordinates: [126.985525, 37.585021],
+              },
+            },
+          ],
+        },
+      });
+      map.current.addSource("caution", {
+        type: "geojson",
+        data: {
+          type: "FeatureCollection",
+          features: [
+            {
+              type: "Feature",
+              properties: {
+                description: "<strong>Event 16</strong><p>Description of Event 16</p>",
+              },
+              geometry: {
+                type: "Point",
+                coordinates: [126.955523, 37.564941],
               },
             },
             {
               type: "Feature",
               properties: {
-                description:
-                  "<strong>Capital Pride Parade</strong><p>The annual Capital Pride Parade makes its way through Dupont this Saturday. 4:30 p.m. Free.</p>",
+                description: "<strong>Event 17</strong><p>Description of Event 17</p>",
               },
               geometry: {
                 type: "Point",
-                coordinates: [-77.043444, 38.909664],
+                coordinates: [126.990168, 37.542463],
               },
             },
             {
               type: "Feature",
               properties: {
-                description:
-                  "<strong>Muhsinah</strong><p>Jazz-influenced hip hop artist Muhsinah plays the Black Cat (1811 14th Street NW) tonight with Exit Clov and Gods’illa. 9:00 p.m. $12.</p>",
+                description: "<strong>Event 18</strong><p>Description of Event 18</p>",
               },
               geometry: {
                 type: "Point",
-                coordinates: [-77.031706, 38.914581],
+                coordinates: [126.976442, 37.52402],
               },
             },
             {
               type: "Feature",
               properties: {
-                description:
-                  "<strong>A Little Night Music</strong><p>The Arlington Players' production of Stephen Sondheim's <em>A Little Night Music</em> comes to the Kogod Cradle at The Mead Center for American Theater (1101 6th Street SW) this weekend and next. 8:00 p.m.</p>",
+                description: "<strong>Event 19</strong><p>Description of Event 19</p>",
               },
               geometry: {
                 type: "Point",
-                coordinates: [-77.020945, 38.878241],
+                coordinates: [126.982403, 37.550141],
               },
             },
             {
               type: "Feature",
               properties: {
-                description:
-                  "<strong>Truckeroo</strong><p>Truckeroo brings dozens of food trucks, live music, and games to half and M Street SE (across from Navy Yard Metro Station) today from 11:00 a.m. to 11:00 p.m.</p>",
+                description: `
+                  <button class="test_button" onClick={testHandler}>버튼</button>
+                `,
               },
               geometry: {
                 type: "Point",
-                coordinates: [-77.007481, 38.876516],
+                coordinates: [126.995432, 37.559921],
+              },
+            },
+          ],
+        },
+      });
+      map.current.addSource("alert", {
+        type: "geojson",
+        data: {
+          type: "FeatureCollection",
+          features: [
+            {
+              type: "Feature",
+              properties: {
+                description: "<strong>Event 11</strong><p>Description of Event 11</p>",
+              },
+              geometry: {
+                type: "Point",
+                coordinates: [126.98942, 37.569764],
+              },
+            },
+            {
+              type: "Feature",
+              properties: {
+                description: "<strong>Event 12</strong><p>Description of Event 12</p>",
+              },
+              geometry: {
+                type: "Point",
+                coordinates: [126.97592, 37.561235],
+              },
+            },
+            {
+              type: "Feature",
+              properties: {
+                description: "<strong>Event 13</strong><p>Description of Event 13</p>",
+              },
+              geometry: {
+                type: "Point",
+                coordinates: [126.96142, 37.5495],
+              },
+            },
+            {
+              type: "Feature",
+              properties: {
+                description: "<strong>Event 14</strong><p>Description of Event 14</p>",
+              },
+              geometry: {
+                type: "Point",
+                coordinates: [126.98592, 37.580321],
+              },
+            },
+            {
+              type: "Feature",
+              properties: {
+                description: "<strong>Event 15</strong><p>Description of Event 15</p>",
+              },
+              geometry: {
+                type: "Point",
+                coordinates: [126.960452, 37.540021],
               },
             },
           ],
         },
       });
 
-      // Add a layer showing the places.
+      // Add a layer showing the information.
       map.current.addLayer({
-        id: "places",
+        id: "information",
         type: "circle",
-        source: "places",
+        source: "information",
         paint: {
-          "circle-color": "#4264fb",
-          "circle-radius": 6,
-          "circle-stroke-width": 2,
-          "circle-stroke-color": "#ffffff",
+          "circle-color": "#4992FF",
+          "circle-radius": 10,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "rgba(255, 255, 255, 0.30)",
+        },
+      });
+      // Add a layer showing the caution.
+      map.current.addLayer({
+        id: "caution",
+        type: "circle",
+        source: "caution",
+        paint: {
+          "circle-color": "#FFD25F",
+          "circle-radius": 10,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "rgba(255, 255, 255, 0.30)",
+        },
+      });
+      // Add a layer showing the alert.
+      map.current.addLayer({
+        id: "alert",
+        type: "circle",
+        source: "alert",
+        paint: {
+          "circle-color": "#FF4958",
+          "circle-radius": 10,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "rgba(255, 255, 255, 0.30)",
         },
       });
 
       // Create a popup, but don't add it to the map yet.
-      const popup = new mapboxgl.Popup({
-        closeButton: false,
-        closeOnClick: false,
-      });
+      const popup = new mapboxgl.Popup({ closeButton: false });
 
-      map.current.on("mouseenter", "places", (e: any) => {
+      map.current.on("click", ["information", "caution", "alert"], (e: any) => {
         // Change the cursor style as a UI indicator.
         map.current.getCanvas().style.cursor = "pointer";
 
@@ -168,25 +264,47 @@ const Map: NextPage = ({ setArea }) => {
         popup.setLngLat(coordinates).setHTML(description).addTo(map.current);
       });
 
-      map.current.on("mouseleave", "places", () => {
+      map.current.on("mouseenter", ["information", "caution", "alert"], () => {
+        map.current.getCanvas().style.cursor = "pointer";
+      });
+
+      map.current.on("mouseleave", ["information", "caution", "alert"], () => {
         map.current.getCanvas().style.cursor = "";
-        popup.remove();
       });
     });
   });
 
   return (
-    <>
-      <div
-        style={{
-          width: "100%",
-          height: "calc(100vh - 104px)",
-        }}
-        className="map-container"
-        ref={mapContainer}
-      />
-    </>
+    <MapWrapper>
+      <div className="map-container" ref={mapContainer} />
+    </MapWrapper>
   );
 };
 
 export default Map;
+
+const MapWrapper = styled.div`
+  .map-container {
+    width: 100%;
+    height: calc(100vh - 104px);
+  }
+
+  .mapboxgl-popup {
+    max-width: 400px;
+    font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
+    .mapboxgl-popup-content {
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.17);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: white;
+      padding: 30px;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .mapboxgl-popup-tip {
+      display: none;
+    }
+  }
+`;
