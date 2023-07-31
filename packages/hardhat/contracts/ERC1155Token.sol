@@ -3,9 +3,10 @@ pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract ERC1155Token is ERC1155, Ownable {
-    constructor() ERC1155("https://bafybeidfaynugl6uhxvgsawncisfzle2banmwkieqt5d7zxsqhjkfr6aiy.ipfs.nftstorage.link/{id}.json") {}
+    constructor() ERC1155("https://bafybeidfaynugl6uhxvgsawncisfzle2banmwkieqt5d7zxsqhjkfr6aiy.ipfs.nftstorage.link/") {}
 
     function setURI(string memory newuri) public onlyOwner {
         _setURI(newuri);
@@ -25,10 +26,10 @@ contract ERC1155Token is ERC1155, Ownable {
         _mintBatch(to, ids, amounts, data);
     }
 
-    function uri(uint256 _tokenid) override public pure returns (string memory) {
+    function uri(uint256 _tokenid) override public view returns (string memory) {
         return string(
             abi.encodePacked(
-                _uri,
+                super.uri(_tokenid),
                 Strings.toString(_tokenid),".json"
             )
         );
