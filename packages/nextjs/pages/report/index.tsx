@@ -1,7 +1,18 @@
 import { CSSProperties, useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { Box, Button, Container, FormControl, InputLabel, MenuItem, Select, TextField, css } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  css,
+} from "@mui/material";
 import { styled } from "@mui/system";
 import type { NextPage } from "next";
 import { useDropzone } from "react-dropzone";
@@ -33,8 +44,9 @@ function CreateNFTWhenContractExist() {
   const [files, setFiles] = useState([]);
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
-  const { address, isConnecting, isDisconnected } = useAccount();
+  const { address } = useAccount();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } = useDropzone({
     maxFiles: 1,
@@ -72,11 +84,11 @@ function CreateNFTWhenContractExist() {
     setAlertLevel(level);
   };
 
-  async function handleType(e) {
+  async function handleType(e: any) {
     setType(e.target.value);
   }
 
-  const { writeAsync, isLoading, isMining } = useScaffoldContractWrite({
+  const { writeAsync } = useScaffoldContractWrite({
     contractName: "ERC721Token",
     functionName: "mintNFT",
     // For payable functions, expressed in ETH
@@ -90,6 +102,7 @@ function CreateNFTWhenContractExist() {
   });
 
   async function Write() {
+    setIsLoading(true);
     console.log("ipfs start");
     const cid = await handleIpfs();
     console.log("write start");
@@ -107,7 +120,7 @@ function CreateNFTWhenContractExist() {
       type,
       name,
       description,
-      image: image,
+      image,
       createdAt: Date.now(),
       lat,
       lng,
@@ -115,7 +128,6 @@ function CreateNFTWhenContractExist() {
 
     const tokenURI = await ipfsUploadMetadata(metadataForUpload);
     const tokenURL = `https://${tokenURI}.ipfs.nftstorage.link`;
-    // await setCid(tokenURL);
     console.log("ipfs end");
     return tokenURL;
   }
@@ -146,6 +158,16 @@ function CreateNFTWhenContractExist() {
 
   return (
     <StyledBox>
+      {isLoading && (
+        <Loading>
+          <CircularProgress />
+          <LoadingTitle>
+            <div>Thanks!</div>
+            <div>Your contribution will save many lives.</div>
+            <div>After about 15 seconds, you'll be sent home.</div>
+          </LoadingTitle>
+        </Loading>
+      )}
       <ReportTitle>
         <Image src="/icn_report.png" width={36} height={36} alt="icn_report" />
         제보하기
@@ -163,7 +185,6 @@ function CreateNFTWhenContractExist() {
           )}
         </UploadSection>
       </div>
-
       <form
         style={{
           display: "flex",
@@ -395,4 +416,29 @@ const StyledBox = styled(Box)``;
 
 const StyledMenuItem = styled(MenuItem)`
   color: white;
+`;
+
+const Loading = styled("div")`
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+const LoadingTitle = styled("div")`
+  margin-top: 30px;
+  text-align: center;
+
+  div {
+    margin: 5px 0;
+  }
 `;
