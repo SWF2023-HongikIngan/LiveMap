@@ -28,7 +28,7 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   await deploy("ERC1155Token", {
     from: deployer,
     // Contract constructor arguments
-    args: [erc721.address, "testURI"],
+    args: [erc721.address, "https://bafybeib3yi2uudlpetooleirkhaib53575w5bedsgdubbnju5okjytqrny.ipfs.nftstorage.link/"],
     log: true,
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
     // automatically mining the contract deployment transaction. There is no effect on live networks.

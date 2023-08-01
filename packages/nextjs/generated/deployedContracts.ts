@@ -5,10 +5,21 @@ const contracts = {
       name: "cronos_testnet",
       contracts: {
         ERC1155Token: {
-          address: "0x4B69E59365Af5F24782E738a5d0CdB08f170992c",
+          address: "0x94ff566e003CC721d347505E43E4b7379500bDDd",
           abi: [
             {
-              inputs: [],
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "erc721",
+                  type: "address",
+                },
+                {
+                  internalType: "string",
+                  name: "tokenURI",
+                  type: "string",
+                },
+              ],
               stateMutability: "nonpayable",
               type: "constructor",
             },
@@ -200,6 +211,30 @@ const contracts = {
             {
               inputs: [
                 {
+                  internalType: "uint256",
+                  name: "id",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "seed",
+                  type: "uint256",
+                },
+              ],
+              name: "getTokens",
+              outputs: [
+                {
+                  internalType: "uint256[]",
+                  name: "tokenIds",
+                  type: "uint256[]",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
                   internalType: "address",
                   name: "account",
                   type: "address",
@@ -225,6 +260,30 @@ const contracts = {
               inputs: [
                 {
                   internalType: "address",
+                  name: "",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              name: "isMinted",
+              outputs: [
+                {
+                  internalType: "bool",
+                  name: "",
+                  type: "bool",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
                   name: "account",
                   type: "address",
                 },
@@ -234,45 +293,12 @@ const contracts = {
                   type: "uint256",
                 },
                 {
-                  internalType: "uint256",
-                  name: "amount",
-                  type: "uint256",
-                },
-                {
                   internalType: "bytes",
                   name: "data",
                   type: "bytes",
                 },
               ],
               name: "mint",
-              outputs: [],
-              stateMutability: "nonpayable",
-              type: "function",
-            },
-            {
-              inputs: [
-                {
-                  internalType: "address",
-                  name: "to",
-                  type: "address",
-                },
-                {
-                  internalType: "uint256[]",
-                  name: "ids",
-                  type: "uint256[]",
-                },
-                {
-                  internalType: "uint256[]",
-                  name: "amounts",
-                  type: "uint256[]",
-                },
-                {
-                  internalType: "bytes",
-                  name: "data",
-                  type: "bytes",
-                },
-              ],
-              name: "mintBatch",
               outputs: [],
               stateMutability: "nonpayable",
               type: "function",
@@ -1886,7 +1912,7 @@ const contracts = {
       name: "localhost",
       contracts: {
         ERC1155Token: {
-          address: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+          address: "0x0165878A594ca255338adfa4d48449f69242Eb8F",
           abi: [
             {
               inputs: [

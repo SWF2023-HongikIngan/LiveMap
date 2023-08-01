@@ -1,15 +1,16 @@
 import { ethers } from 'hardhat'
 //import ERC721Token from '../deployments/cronos_testnet/ERC721Token.json';
-import ERC721Token from '../deployments/cronos_testnet/ERC721Token.json';
+import ERC721Token from '../deployments/localhost/ERC721Token.json';
 
-const provider = new ethers.providers.JsonRpcProvider(
-    "https://evm-t3.cronos.org/"
-);
 /* const provider = new ethers.providers.JsonRpcProvider(
-    "http://127.0.0.1:8545/"
+    "https://evm-t3.cronos.org/"
 ); */
+const provider = new ethers.providers.JsonRpcProvider(
+    "http://127.0.0.1:8545/"
+);
 
-const secretkey = process.env.DEPLOYER_PRIVATE_KEY;
+//const secretkey = process.env.DEPLOYER_PRIVATE_KEY;
+const secretkey = process.env.LOCAL_PRIVATE_KEY;
 const walletObj = new ethers.Wallet(secretkey!);
 const ethersSigner = walletObj.connect(provider);
 
