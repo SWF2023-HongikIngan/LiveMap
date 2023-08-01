@@ -12,12 +12,12 @@ const Map: NextPage = () => {
   // const [lat, setLat] = useState(37.57);
   // const [zoom, setZoom] = useState(11);
   const description = `
-  <img class="info_image" src="/hole.png"/>
-  <div class="info_box">
-    <div class="info_box_title">서울시 강남구서울시 강남구서울시 강남구</div>
-    <img class="enter_image" src="/right_arrow.png"/>
-  </div>
-`;
+    <img class="info_image" src="/hole.png"/>
+    <div class="info_box">
+      <div class="info_box_title">서울시 강남구서울시 강남구서울시 강남구</div>
+      <img class="enter_image" src="/right_arrow.png"/>
+    </div>
+  `;
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
@@ -204,7 +204,6 @@ const Map: NextPage = () => {
         },
       });
 
-      // Add a layer showing the information.
       map.current.addLayer({
         id: "information",
         type: "circle",
@@ -216,7 +215,6 @@ const Map: NextPage = () => {
           "circle-stroke-color": "rgba(255, 255, 255, 0.30)",
         },
       });
-      // Add a layer showing the caution.
       map.current.addLayer({
         id: "caution",
         type: "circle",
@@ -228,7 +226,6 @@ const Map: NextPage = () => {
           "circle-stroke-color": "rgba(255, 255, 255, 0.30)",
         },
       });
-      // Add a layer showing the alert.
       map.current.addLayer({
         id: "alert",
         type: "circle",
@@ -263,11 +260,9 @@ const Map: NextPage = () => {
         // based on the feature found.
         popup.setLngLat(coordinates).setHTML(description).addTo(map.current);
       });
-
       map.current.on("mouseenter", ["information", "caution", "alert"], () => {
         map.current.getCanvas().style.cursor = "pointer";
       });
-
       map.current.on("mouseleave", ["information", "caution", "alert"], () => {
         map.current.getCanvas().style.cursor = "";
       });
@@ -286,11 +281,11 @@ export default Map;
 const MapWrapper = styled.div`
   .map-container {
     width: 100%;
-    height: calc(100vh - 104px);
+    height: 100vh;
   }
 
   .mapboxgl-popup {
-    font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font-size: 12px/20px;
     .mapboxgl-popup-content {
       max-width: 158px;
       background: rgba(255, 255, 255, 0.5);
