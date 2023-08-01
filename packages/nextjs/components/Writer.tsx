@@ -1,26 +1,9 @@
+import { useEffect } from "react";
 import styled from "@emotion/styled";
-import { Button } from "@mui/material";
-import { useAccount } from "wagmi";
 import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
-const FactButton = styled.div`
-  width: 126px;
-  height: 36px;
-  border-radius: 30px;
-  background: #000;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-`;
-
-// export default function Writer({ cid }) {
-export default function Writer({ contractName, functionName, args, text }) {
-  //   const { address, isConnecting, isDisconnected } = useAccount();
-  const { writeAsync, isLoading, isMining } = useScaffoldContractWrite({
+export default function Writer({ contractName, functionName, args, text }: any) {
+  const { writeAsync, isSuccess } = useScaffoldContractWrite({
     contractName: contractName,
     functionName: functionName,
     args: [...args],
@@ -38,5 +21,25 @@ export default function Writer({ contractName, functionName, args, text }) {
     await writeAsync();
   }
 
+  useEffect(() => {
+    if (isSuccess === true) {
+      alert("Fact Checked! It will be reflected in a moment.");
+    }
+  }, [isSuccess]);
+
   return <FactButton onClick={Write}>{text}</FactButton>;
 }
+
+const FactButton = styled.div`
+  width: 126px;
+  height: 36px;
+  border-radius: 30px;
+  background: #000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+`;
