@@ -85,7 +85,7 @@ contract ERC721Token is ERC721URIStorage, Ownable{
         require(from == address(0) || to == address(0), "Transfer not allowed");
     }
 
-    function getActiveNFT() public view returns(uint256[] memory ids, string[] memory uris){
+    function getActiveNFT() public view returns(uint256[] memory ids, string[] memory uris, address[] memory owners){
         uint256 activeCnt = 0;
         for(uint256 i = 1; i <= _tokenIds; i++) {
             if(isActive[i]) {
@@ -94,6 +94,7 @@ contract ERC721Token is ERC721URIStorage, Ownable{
         }
         ids = new uint256[](activeCnt);
         uris = new string[](activeCnt);
+        owners = new address[](activeCnt);
         uint256 idx = 0;
         for(uint256 i = 1; i <= _tokenIds; i++) {
             if(isActive[i]) {
@@ -101,6 +102,7 @@ contract ERC721Token is ERC721URIStorage, Ownable{
 
                 ids[idx] = i;
                 uris[idx] = uri;
+                owners[idx] = ownerOf(i);
                 idx++;
             }
         }
