@@ -5,7 +5,7 @@ const contracts = {
       name: "cronos_testnet",
       contracts: {
         ERC1155Token: {
-          address: "0x94ff566e003CC721d347505E43E4b7379500bDDd",
+          address: "0x455fDdAe3b2E2b7013d72bBE84a6c3536b144d95",
           abi: [
             {
               inputs: [
