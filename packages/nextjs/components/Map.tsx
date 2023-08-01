@@ -68,15 +68,54 @@ const Map: NextPage = () => {
     });
   };
 
-  // console.log(useScaffoldContractRead);
-
-  // const { data, isError, isLoading } = useContractRead({
-  //   address: '0xecb504d39723b0be0e3a9aa33d646642d1051ee1',
-  //   abi: wagmigotchiABI,
-  //   functionName: 'getHunger',
-  // })
-
   // console.log(totalReports); // 이게 중요한 데이터
+  useEffect(() => {
+    if (map.current === null) return;
+
+    map.current.removeLayer("information");
+    map.current.removeLayer("caution");
+    map.current.removeLayer("alert");
+
+    if (filter.level.includes(0) === true || filter.level.length === 0) {
+      map.current.addLayer({
+        id: "information",
+        type: "circle",
+        source: "information",
+        paint: {
+          "circle-color": "#4992FF",
+          "circle-radius": 10,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "rgba(255, 255, 255, 0.30)",
+        },
+      });
+    }
+    if (filter.level.includes(1) === true || filter.level.length === 0) {
+      map.current.addLayer({
+        id: "caution",
+        type: "circle",
+        source: "caution",
+        paint: {
+          "circle-color": "#F3B06C",
+          "circle-radius": 10,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "rgba(255, 255, 255, 0.30)",
+        },
+      });
+    }
+    if (filter.level.includes(2) === true || filter.level.length === 0) {
+      map.current.addLayer({
+        id: "alert",
+        type: "circle",
+        source: "alert",
+        paint: {
+          "circle-color": "#FF4958",
+          "circle-radius": 10,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": "rgba(255, 255, 255, 0.30)",
+        },
+      });
+    }
+  }, [map, filter]);
 
   useEffect(() => {
     if (totalReports === undefined) return;
@@ -109,7 +148,9 @@ const Map: NextPage = () => {
       zoom: 11,
     });
 
+    console.log("1");
     map.current.on("load", () => {
+      console.log("2");
       map.current.addSource("information", {
         type: "geojson",
         data: {
@@ -139,6 +180,7 @@ const Map: NextPage = () => {
             }),
         },
       });
+
       map.current.addSource("caution", {
         type: "geojson",
         data: {
@@ -168,6 +210,7 @@ const Map: NextPage = () => {
             }),
         },
       });
+
       map.current.addSource("alert", {
         type: "geojson",
         data: {
@@ -261,7 +304,7 @@ const Map: NextPage = () => {
         map.current.getCanvas().style.cursor = "";
       });
     });
-  }, [datas, map.current]);
+  }, [datas, filter]);
 
   return (
     <MapWrapper>
@@ -382,7 +425,7 @@ const MapWrapper = styled.div`
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      a {
+      .enter_button {
         display: block;
         max-width: 158px;
         display: flex;
