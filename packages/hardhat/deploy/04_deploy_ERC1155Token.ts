@@ -20,6 +20,7 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
     You can run the `yarn account` command to check your balance in every network.
     
   */
+  const erc721 = await hre.deployments.get('ERC721Token');
   const provider = ethers.provider;
   const deployer = await provider.getSigner().getAddress();
   const { deploy } = hre.deployments;
@@ -27,7 +28,7 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   await deploy("ERC1155Token", {
     from: deployer,
     // Contract constructor arguments
-    args: [],
+    args: [erc721.address, "testURI"],
     log: true,
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
     // automatically mining the contract deployment transaction. There is no effect on live networks.
