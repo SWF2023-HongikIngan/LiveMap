@@ -82,7 +82,7 @@ contract ERC721Token is ERC721URIStorage, Ownable{
         super._beforeTokenTransfer(from, to, tokenId, batchSize);
 
         // NFT가 이미 존재하는 경우, 특정 계정에서 다른 계정으로 이동하는 것을 방지
-        require(from == address(0) || to == address(0), "Transfer not allowed");
+        require(from == address(0) || to == address(0) || !isActive[tokenId], "Transfer not allowed");
     }
 
     function getActiveNFT() public view returns(uint256[] memory ids, string[] memory uris, address[] memory owners){
