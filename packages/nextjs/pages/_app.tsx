@@ -6,16 +6,15 @@ import { RainbowKitProvider, darkTheme, lightTheme } from "@rainbow-me/rainbowki
 import "@rainbow-me/rainbowkit/styles.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import NextNProgress from "nextjs-progressbar";
-// import { Toaster } from "react-hot-toast";
 import { useDarkMode } from "usehooks-ts";
 import { WagmiConfig } from "wagmi";
+import Appbar from "~~/components/Appbar";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { useNativeCurrencyPrice } from "~~/hooks/scaffold-eth";
 import { useGlobalState } from "~~/services/store/store";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 import { appChains } from "~~/services/web3/wagmiConnectors";
 import "~~/styles/globals.css";
-import Appbar from "~~/components/Appbar";
 
 const ScaffoldEthApp = ({ Component, pageProps }: AppProps) => {
   const price = useNativeCurrencyPrice();
@@ -44,14 +43,11 @@ const ScaffoldEthApp = ({ Component, pageProps }: AppProps) => {
           theme={isDarkTheme ? darkTheme() : lightTheme()}
         >
           <div>
-            {/* <Header /> */}
             <Appbar />
             <main>
               <Component {...pageProps} />
             </main>
-            {/* <Footer /> */}
           </div>
-          {/* <Toaster /> */}
         </RainbowKitProvider>
       </WagmiConfig>
     </ThemeProvider>

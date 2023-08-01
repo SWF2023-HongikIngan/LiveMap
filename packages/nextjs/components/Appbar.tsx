@@ -1,49 +1,76 @@
-// import * as React from "react";
-// import MenuIcon from "@mui/icons-material/Menu";
-// import AppBar from "@mui/material/AppBar";
-// import Box from "@mui/material/Box";
-// import IconButton from "@mui/material/IconButton";
-// import Toolbar from "@mui/material/Toolbar";
-// import { ConnectButton } from "@rainbow-me/rainbowkit";
-// import { Bars3Icon, BugAntIcon, MagnifyingGlassIcon, SparklesIcon } from "@heroicons/react/24/outline";
-// import { rgba } from "polished";
 import * as React from "react";
-import AppBar, { AppBarProps } from "@mui/material/AppBar";
-import Box, { BoxProps } from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { WalletButton } from "./WalletButton";
+import { IconButton, Menu, MenuItem } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { Bars3Icon } from "@heroicons/react/24/outline";
 
 export default function ResponsiveDrawer() {
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const router = useRouter();
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = (link: string) => {
+    setAnchorEl(null);
+    if (link) {
+      router.push(link);
+    }
   };
 
   return (
     <Box>
       <AppBar
         sx={{
-          width: { sm: `100%` },
-
-          background: "rgba(255, 255, 255, 0.1)",
-        //   boxShadow: `0 8px 32px 0 rgba(255, 255, 255, 0.17)`,
-          boxShadow: `5px 5px 5px #888888`,
-        //   box-shadow: 5px 5px 5px #888888;
-          backdropFilter: `blur(20px)`,
-          WebkitBackdropFilter: `blur(20px)`,
-          border: `1px solid rgba(255, 255, 255, 0.18)`,
-          color: "white",
-          padding: 0,
-          //   borderRadius: 20,
-          overflow: "hidden",
+          background: "rgba(255, 255, 255, 0.50)",
+          boxShadow: `0px 0px 5px 0px rgba(0, 0, 0, 0.15)`,
+          backdropFilter: `blur(3px)`,
+          WebkitBackdropFilter: `blur(3px)`,
         }}
       >
-        <Toolbar>
-          <Box sx={{ flexGrow: 1 }}></Box>
-          <ConnectButton />
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{
+              width: "48px",
+              height: "48px",
+            }}
+            id="basic-button"
+            aria-controls={open ? "basic-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? "true" : undefined}
+            onClick={handleClick}
+          >
+            <Image src="/MenuIcon.png" alt="menu" width="48" height="48" />
+          </IconButton>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+            slotProps={{
+              paper: {
+                sx: {
+                  backgroundColor: "white",
+                },
+              },
+            }}
+          >
+            <MenuItem onClick={() => handleClose("/")}>홈으로</MenuItem>
+            <MenuItem onClick={() => handleClose("/report")}>제보하기</MenuItem>
+            <MenuItem onClick={() => handleClose("/")}>전체보기</MenuItem>
+          </Menu>
+          <WalletButton />
         </Toolbar>
       </AppBar>
     </Box>
