@@ -67,9 +67,9 @@ export default function ResponsiveDrawer() {
               },
             }}
           >
-            <MenuItem onClick={() => handleClose("/")}>홈으로</MenuItem>
-            <MenuItem onClick={() => handleClose("/report")}>제보하기</MenuItem>
-            <MenuItem onClick={() => handleClose("/")}>전체보기</MenuItem>
+            <MenuItem onClick={() => handleClose("/")}>Home</MenuItem>
+            <MenuItem onClick={() => handleClose("/report")}>Report</MenuItem>
+            <MenuItem onClick={() => handleClose("/")}>List</MenuItem>
           </Menu>
           <ConnectButton label="CONNECT WALLET" />
         </Toolbar>

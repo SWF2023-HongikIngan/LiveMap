@@ -223,7 +223,7 @@ function CreateNFTWhenContractExist() {
           }}
         >
           <InputLabel shrink htmlFor="uncontrolled-native">
-            재난 종류
+            Disaster type
           </InputLabel>
           <Select
             inputProps={{
@@ -233,10 +233,10 @@ function CreateNFTWhenContractExist() {
             value={type}
             onChange={(e: any) => setType(e.target.value)}
           >
-            <StyledMenuItem value={"heavyrain"}>호우</StyledMenuItem>
-            <StyledMenuItem value={"fire"}>화재</StyledMenuItem>
-            <StyledMenuItem value={"flood"}>홍수/침수</StyledMenuItem>
-            <StyledMenuItem value={"collapse"}>붕괴</StyledMenuItem>
+            <StyledMenuItem value={"heavyrain"}>Heavyrain</StyledMenuItem>
+            <StyledMenuItem value={"fire"}>Fire</StyledMenuItem>
+            <StyledMenuItem value={"flood"}>Flood</StyledMenuItem>
+            <StyledMenuItem value={"collapse"}>Collapse</StyledMenuItem>
           </Select>
         </FormControl>
 
@@ -248,7 +248,7 @@ function CreateNFTWhenContractExist() {
           variant="contained"
           type="submit"
         >
-          제보하기
+          Report
         </Button>
       </form>
       {/* <Button variant='contained' onClick={getTokenId}>getID</Button> */}

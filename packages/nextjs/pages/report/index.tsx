@@ -170,9 +170,9 @@ function CreateNFTWhenContractExist() {
       )}
       <ReportTitle>
         <Image src="/icn_report.png" width={36} height={36} alt="icn_report" />
-        제보하기
+        Report
       </ReportTitle>
-      <UploadTitle>사진 업로드</UploadTitle>
+      <UploadTitle>Upload Image</UploadTitle>
       <div style={test}>
         <UploadSection className="container">
           {thumbs.length === 0 ? (
@@ -192,7 +192,7 @@ function CreateNFTWhenContractExist() {
         }}
       >
         <TextField
-          label="제목"
+          label="Title"
           value={name}
           onChange={e => setName(e.target.value)}
           style={{
@@ -202,7 +202,7 @@ function CreateNFTWhenContractExist() {
 
         <TextField
           multiline={true}
-          label="신고 내용"
+          label="Report Content"
           minRows={3}
           value={description}
           onChange={e => setDescription(e.target.value)}
@@ -211,17 +211,17 @@ function CreateNFTWhenContractExist() {
           }}
         />
 
-        <ReportCategoryTitle>제보 종류</ReportCategoryTitle>
+        <ReportCategoryTitle>Type of Report</ReportCategoryTitle>
 
         <ButtonBox>
           <InfoButton active={alertLevel === 0} onClick={() => changeAlertLevel(0)}>
-            정보
+            Info
           </InfoButton>
           <ButtonCaution active={alertLevel === 1} onClick={() => changeAlertLevel(1)}>
-            주의
+            Caution
           </ButtonCaution>
           <AlertButton active={alertLevel === 2} onClick={() => changeAlertLevel(2)}>
-            경보
+            Alert
           </AlertButton>
         </ButtonBox>
 
@@ -231,7 +231,7 @@ function CreateNFTWhenContractExist() {
           }}
         >
           <InputLabel shrink htmlFor="uncontrolled-native">
-            재난 종류
+            Disaster type
           </InputLabel>
           <Select
             inputProps={{
@@ -241,10 +241,10 @@ function CreateNFTWhenContractExist() {
             value={type}
             onChange={handleType}
           >
-            <StyledMenuItem value={"heavyrain"}>호우</StyledMenuItem>
-            <StyledMenuItem value={"fire"}>화재</StyledMenuItem>
-            <StyledMenuItem value={"flood"}>홍수/침수</StyledMenuItem>
-            <StyledMenuItem value={"collapse"}>붕괴</StyledMenuItem>
+            <StyledMenuItem value={"heavyrain"}>Heavyrain</StyledMenuItem>
+            <StyledMenuItem value={"fire"}>Fire</StyledMenuItem>
+            <StyledMenuItem value={"flood"}>Flood</StyledMenuItem>
+            <StyledMenuItem value={"collapse"}>Collapse</StyledMenuItem>
           </Select>
         </FormControl>
         <Button
@@ -255,7 +255,7 @@ function CreateNFTWhenContractExist() {
           variant="contained"
           onClick={Write}
         >
-          제보하기
+          Report
         </Button>
       </form>
     </StyledBox>

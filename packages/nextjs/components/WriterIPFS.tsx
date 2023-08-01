@@ -47,7 +47,7 @@ export default function Writer({ contractName, functionName, args, text }) {
       variant="contained"
       onClick={Write}
     >
-      제보하기
+      Report
     </Button>
   );
 }
