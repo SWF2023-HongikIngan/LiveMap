@@ -9,6 +9,7 @@ import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
 const Map: NextPage = () => {
+  const [datas, setDatas] = useState<any[]>([]);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -67,7 +68,6 @@ const Map: NextPage = () => {
     });
   };
 
-  console.log(totalReports); // 이게 중요한 데이터
   // console.log(useScaffoldContractRead);
 
   // const { data, isError, isLoading } = useContractRead({
@@ -76,20 +76,32 @@ const Map: NextPage = () => {
   //   functionName: 'getHunger',
   // })
 
-  // console.log(data)
+  // console.log(totalReports); // 이게 중요한 데이터
 
-  const description = `
-    <img class="info_image" src="/hole.png"/>
-    <div class="info_box">
-      <div class="info_box_title">서울시 강남구서울시 강남구서울시 강남구</div>
-      <img class="enter_image" src="/right_arrow.png"/>
-    </div>
-  `;
+  useEffect(() => {
+    if (totalReports === undefined) return;
+
+    const fetchData = async () => {
+      const result = await Promise.all(
+        (totalReports[0] as any).map(async (id: any, index: number) => {
+          if ((totalReports[1] as any)[index].slice(0, 4) !== "http") return null;
+          const data = await fetch((totalReports[1] as any)[index]).then(res => res.json());
+          const address = (totalReports[2] as any)[index];
+          return { id, data, address };
+        }),
+      );
+
+      setDatas(result.filter(item => item !== null)); // null 값 제거
+    };
+
+    fetchData();
+  }, [totalReports]);
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
+    if (datas.length === 0) return;
 
-    // console.log(data)
+    console.log(datas);
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/streets-v12",
@@ -102,174 +114,84 @@ const Map: NextPage = () => {
         type: "geojson",
         data: {
           type: "FeatureCollection",
-          features: [
-            {
-              type: "Feature",
-              properties: {
-                description,
-              },
-              geometry: {
-                type: "Point",
-                coordinates: [126.99342, 37.554319],
-              },
-            },
-            {
-              type: "Feature",
-              properties: {
-                description,
-              },
-              geometry: {
-                type: "Point",
-                coordinates: [126.976833, 37.561924],
-              },
-            },
-            {
-              type: "Feature",
-              properties: {
-                description,
-              },
-              geometry: {
-                type: "Point",
-                coordinates: [126.952013, 37.532289],
-              },
-            },
-            {
-              type: "Feature",
-              properties: {
-                description,
-              },
-              geometry: {
-                type: "Point",
-                coordinates: [126.990185, 37.572204],
-              },
-            },
-            {
-              type: "Feature",
-              properties: {
-                description,
-              },
-              geometry: {
-                type: "Point",
-                coordinates: [126.985525, 37.585021],
-              },
-            },
-          ],
+          features: datas
+            .filter(data => data.data.alertLevel === 0)
+            .map(data => {
+              return {
+                type: "Feature",
+                properties: {
+                  description: `
+                  <a href="/report/${data.id}" class="enter_button">
+                    <img class="info_image" src=${data.data.image}/>
+                    <div class="info_box">
+                    <div class="info_box_title">${data.data.name}</div>
+                      <img class="enter_image" src="/right_arrow.png"/>
+                    </div>
+                  </a>
+                  `,
+                },
+                geometry: {
+                  type: "Point",
+                  coordinates: [data.data.lng, data.data.lat],
+                },
+              };
+            }),
         },
       });
       map.current.addSource("caution", {
         type: "geojson",
         data: {
           type: "FeatureCollection",
-          features: [
-            {
-              type: "Feature",
-              properties: {
-                description,
-              },
-              geometry: {
-                type: "Point",
-                coordinates: [126.955523, 37.564941],
-              },
-            },
-            {
-              type: "Feature",
-              properties: {
-                description,
-              },
-              geometry: {
-                type: "Point",
-                coordinates: [126.990168, 37.542463],
-              },
-            },
-            {
-              type: "Feature",
-              properties: {
-                description,
-              },
-              geometry: {
-                type: "Point",
-                coordinates: [126.976442, 37.52402],
-              },
-            },
-            {
-              type: "Feature",
-              properties: {
-                description,
-              },
-              geometry: {
-                type: "Point",
-                coordinates: [126.982403, 37.550141],
-              },
-            },
-            {
-              type: "Feature",
-              properties: {
-                description,
-              },
-              geometry: {
-                type: "Point",
-                coordinates: [126.995432, 37.559921],
-              },
-            },
-          ],
+          features: datas
+            .filter(data => data.data.alertLevel === 1)
+            .map(data => {
+              return {
+                type: "Feature",
+                properties: {
+                  description: `
+                  <a href="/report/${data.id}" class="enter_button">
+                    <img class="info_image" src=${data.data.image}/>
+                    <div class="info_box">
+                    <div class="info_box_title">${data.data.name}</div>
+                      <img class="enter_image" src="/right_arrow.png"/>
+                    </div>
+                  </a>
+                  `,
+                },
+                geometry: {
+                  type: "Point",
+                  coordinates: [data.data.lng, data.data.lat],
+                },
+              };
+            }),
         },
       });
       map.current.addSource("alert", {
         type: "geojson",
         data: {
           type: "FeatureCollection",
-          features: [
-            {
-              type: "Feature",
-              properties: {
-                description,
-              },
-              geometry: {
-                type: "Point",
-                coordinates: [126.98942, 37.569764],
-              },
-            },
-            {
-              type: "Feature",
-              properties: {
-                description,
-              },
-              geometry: {
-                type: "Point",
-                coordinates: [126.97592, 37.561235],
-              },
-            },
-            {
-              type: "Feature",
-              properties: {
-                description,
-              },
-              geometry: {
-                type: "Point",
-                coordinates: [126.96142, 37.5495],
-              },
-            },
-            {
-              type: "Feature",
-              properties: {
-                description,
-              },
-              geometry: {
-                type: "Point",
-                coordinates: [126.98592, 37.580321],
-              },
-            },
-            {
-              type: "Feature",
-              properties: {
-                description,
-              },
-              geometry: {
-                type: "Point",
-                coordinates: [126.960452, 37.540021],
-              },
-            },
-          ],
+          features: datas
+            .filter(data => data.data.alertLevel === 2)
+            .map(data => {
+              return {
+                type: "Feature",
+                properties: {
+                  description: `
+                  <a href="/report/${data.id}" class="enter_button">
+                    <img class="info_image" src=${data.data.image}/>
+                    <div class="info_box">
+                    <div class="info_box_title">${data.data.name}</div>
+                      <img class="enter_image" src="/right_arrow.png"/>
+                    </div>
+                  </a>
+                  `,
+                },
+                geometry: {
+                  type: "Point",
+                  coordinates: [data.data.lng, data.data.lat],
+                },
+              };
+            }),
         },
       });
 
@@ -336,7 +258,7 @@ const Map: NextPage = () => {
         map.current.getCanvas().style.cursor = "";
       });
     });
-  });
+  }, [datas, map.current]);
 
   return (
     <MapWrapper>
