@@ -448,7 +448,7 @@ const contracts = {
           ],
         },
         ERC20Token: {
-          address: "0x83b9a2E1F56767481483FC1261CdeA1260A0EF34",
+          address: "0x9c609665cEE377Df4e5b603754386F33Cd09E6e9",
           abi: [
             {
               inputs: [],
@@ -668,13 +668,32 @@ const contracts = {
               inputs: [
                 {
                   internalType: "address",
-                  name: "receiver",
+                  name: "",
                   type: "address",
                 },
                 {
-                  internalType: "uint256",
-                  name: "value",
-                  type: "uint256",
+                  internalType: "address",
+                  name: "",
+                  type: "address",
+                },
+              ],
+              name: "isMinted",
+              outputs: [
+                {
+                  internalType: "bool",
+                  name: "",
+                  type: "bool",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "receiver",
+                  type: "address",
                 },
               ],
               name: "mint",
