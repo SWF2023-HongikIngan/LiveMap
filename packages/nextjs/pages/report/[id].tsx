@@ -25,6 +25,8 @@ const DetailPage = () => {
     args: [],
   });
 
+  console.log(report);
+
   const { data: accountAddress6551 } = useScaffoldContractRead({
     contractName: "ERC721Token",
     functionName: "getAccountAddress",
