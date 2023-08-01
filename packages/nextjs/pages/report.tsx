@@ -1,115 +1,20 @@
-// import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-// import Image from "next/image";
-import TextareaAutosize from "@mui/base/TextareaAutosize";
-import { Box, Button, Container, MenuItem, Select, TextField } from "@mui/material";
+import { CSSProperties, useEffect, useState } from "react";
+import Image from "next/image";
+import { Box, Button, Container, FormControl, InputLabel, MenuItem, Select, TextField, css } from "@mui/material";
 import { styled } from "@mui/system";
 import type { NextPage } from "next";
 import { useDropzone } from "react-dropzone";
 
-const thumbsContainer = {
-  display: "flex",
-  flexDirection: "row",
-  flexWrap: "wrap",
-  marginTop: 16,
-};
-
-const thumb = {
-  display: "inline-flex",
-  borderRadius: 2,
-  border: "1px solid #eaeaea",
-  marginBottom: 8,
-  marginRight: 8,
-  width: 500,
-  height: 500,
-  padding: 4,
-  boxSizing: "border-box",
-};
-
-const thumbInner = {
-  display: "flex",
-  minWidth: 0,
-  overflow: "hidden",
-};
-
-const img = {
-  display: "block",
-  width: "auto",
-  height: "100%",
-};
-
-const test = {
-  // width: '500px',
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  padding: "20px",
-  borderWidth: "2px",
-  borderRadius: "2px",
-  borderColor: "#eeeeee",
-  borderStyle: "dashed",
-  backgroundColor: "#fafafa",
-  color: "#bdbdbd",
-  outline: "none",
-  transition: "border .24s ease-in-out",
-};
-
-const getColor = props => {
-  if (props.isDragAccept) {
-    return "#00e676";
-  }
-  if (props.isDragReject) {
-    return "#ff1744";
-  }
-  if (props.isFocused) {
-    return "#2196f3";
-  }
-  return "#eeeeee";
-};
-
-const DropContainer = styled(Box)`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  // border-width: 2px;
-  border-radius: 2px;
-  border-color: ${props => getColor(props)};
-  border-style: dashed;
-  background-color: #fafafa;
-  color: #bdbdbd;
-  outline: none;
-  transition: border 0.24s ease-in-out;
-  height: 30vh;
-  // marginTop: 0px;
-`;
-
-const StyledBox = styled(Box)(props => {
-  console.log("styled props", props);
-  return {
-    "&   *": {
-      margin: props.theme.spacing(1),
-      // padding: props.theme.spacing(1),
-    },
-  };
-});
-
-const StyledMenuItem = styled(MenuItem)`
-  // background-color: red;
-  color: white;
-`;
-
 const ExampleUI: NextPage = () => {
   return (
     <>
-      <div className=" flex items-center justify-center ">
-        <Container maxWidth="xs">
-          <Box style={{ backgroundColor: "#cfe8fc" }}>
+      <ReportWrapper>
+        <Container>
+          <Box>
             <CreateNFTWhenContractExist />
           </Box>
         </Container>
-      </div>
+      </ReportWrapper>
     </>
   );
 };
@@ -121,13 +26,9 @@ function CreateNFTWhenContractExist() {
   const [description, setDescription] = useState("");
   const [alertLevel, setAlertLevel] = useState(0);
   const [type, setType] = useState(0);
-
   const [files, setFiles] = useState([]);
-
-  // const selectedCollection = useMinterLabStore(state => state.selectedCollection);
-
-  const [price, setPrice] = useState(0);
-  const [maxSupply, setMaxSupply] = useState(0);
+  const [lat, setLat] = useState(0);
+  const [lng, setLng] = useState(0);
 
   // const { data: signer, isError, isLoading } = useSigner();
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } = useDropzone({
@@ -143,8 +44,8 @@ function CreateNFTWhenContractExist() {
           }),
         ),
       );
-      console.log(acceptedFiles);
-      console.log(acceptedFiles[0]);
+      // console.log(acceptedFiles);
+      // console.log(acceptedFiles[0]);
     },
   });
 
@@ -152,7 +53,7 @@ function CreateNFTWhenContractExist() {
     <div style={thumb} key={file.name}>
       <div style={thumbInner}>
         <img
-          alt="hello"
+          alt="thumbnail"
           src={file.preview}
           style={img}
           // Revoke data uri after image is loaded
@@ -164,67 +65,300 @@ function CreateNFTWhenContractExist() {
     </div>
   ));
 
+  const changeAlertLevel = (level: 0 | 1 | 2) => {
+    setAlertLevel(level);
+  };
+
+  const handleIpfs = () => {
+    const json = {
+      alertLevel,
+      type,
+      name,
+      description,
+      image: "곧 올라갈 예정",
+      createdAt: Date.now(),
+      lat,
+      lng,
+    };
+    alert(JSON.stringify(json));
+  };
+
   useEffect(() => {
+    const { geolocation } = navigator;
+
+    geolocation.getCurrentPosition(
+      position => {
+        // success.
+        setLat(position.coords.latitude);
+        setLng(position.coords.longitude);
+      },
+      error => {
+        console.warn("Fail to fetch current location", error);
+        setLat(37);
+        setLng(127);
+      },
+      {
+        enableHighAccuracy: false,
+        maximumAge: 0,
+        timeout: Infinity,
+      },
+    );
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
     return () => files.forEach(file => URL.revokeObjectURL(file.preview));
   }, [files]);
 
   return (
     <StyledBox>
+      <ReportTitle>
+        <Image src="/icn_report.png" width={36} height={36} alt="icn_report" />
+        제보하기
+      </ReportTitle>
+      <UploadTitle>사진 업로드</UploadTitle>
       <div style={test}>
-        <section className="container">
-          <DropContainer {...getRootProps({ isFocused, isDragAccept, isDragReject })}>
-            <input {...getInputProps()} />
-            <p>Drag 'n' drop a file here, or click to select a file</p>
-          </DropContainer>
-          <aside style={thumbsContainer}>{thumbs}</aside>
-        </section>
+        <UploadSection className="container">
+          {thumbs.length === 0 ? (
+            <DropContainer {...getRootProps({ isFocused, isDragAccept, isDragReject })}>
+              <input {...getInputProps()} />
+              <p>Drag `n` drop a file here, or click to select a file</p>
+            </DropContainer>
+          ) : (
+            <aside style={thumbsContainer}>{thumbs}</aside>
+          )}
+        </UploadSection>
       </div>
 
       <form
-        // onSubmit={handleIpfs}
-        style={{ display: "flex", flexDirection: "column" }}
+        onSubmit={handleIpfs}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+        }}
       >
-        <TextField label="Name" variant="outlined" value={name} onChange={e => setName(e.target.value)} />
-
-        <TextareaAutosize
-          aria-label="minimum height"
-          minRows={3}
-          placeholder="Description"
-          value={description}
-          onChange={e => setDescription(e.target.value)}
+        <TextField
+          label="제목"
+          value={name}
+          onChange={e => setName(e.target.value)}
+          style={{
+            marginTop: "16px",
+          }}
         />
 
-        <h1>제보 종류</h1>
+        <TextField
+          multiline={true}
+          label="신고 내용"
+          minRows={3}
+          value={description}
+          onChange={e => setDescription(e.target.value)}
+          style={{
+            marginTop: "20px",
+          }}
+        />
 
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={alertLevel}
-          label="alertLevel"
-          onChange={e => setAlertLevel(e.target.value)}
-        >
-          <StyledMenuItem value={10}>Ten</StyledMenuItem>
-          <StyledMenuItem value={20}>Twenty</StyledMenuItem>
-          <StyledMenuItem value={30}>Thirty</StyledMenuItem>
-        </Select>
+        <ReportCategoryTitle>제보 종류</ReportCategoryTitle>
 
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={type}
-          label="Age"
-          onChange={e => setType(e.target.value)}
+        <ButtonBox>
+          <InfoButton active={alertLevel === 0} onClick={() => changeAlertLevel(0)}>
+            정보
+          </InfoButton>
+          <ButtonCaution active={alertLevel === 1} onClick={() => changeAlertLevel(1)}>
+            주의
+          </ButtonCaution>
+          <AlertButton active={alertLevel === 2} onClick={() => changeAlertLevel(2)}>
+            경보
+          </AlertButton>
+        </ButtonBox>
+
+        <FormControl
+          style={{
+            margin: "29px 0",
+          }}
         >
-          <StyledMenuItem value={10}>Ten</StyledMenuItem>
-          <StyledMenuItem value={20}>Twenty</StyledMenuItem>
-          <StyledMenuItem value={30}>Thirty</StyledMenuItem>
-        </Select>
-        <Button variant="contained" type="submit">
-          Create NFT
+          <InputLabel shrink htmlFor="uncontrolled-native">
+            재난 종류
+          </InputLabel>
+          <Select
+            inputProps={{
+              id: "uncontrolled-native",
+            }}
+            label="재난 종류"
+            value={type}
+            onChange={(e: any) => setType(e.target.value)}
+          >
+            <StyledMenuItem value={"heavyrain"}>호우</StyledMenuItem>
+            <StyledMenuItem value={"fire"}>화재</StyledMenuItem>
+            <StyledMenuItem value={"flood"}>홍수/침수</StyledMenuItem>
+            <StyledMenuItem value={"collapse"}>붕괴</StyledMenuItem>
+          </Select>
+        </FormControl>
+
+        <Button
+          style={{
+            padding: "10px 0",
+            borderRadius: 30,
+          }}
+          variant="contained"
+          type="submit"
+        >
+          제보하기
         </Button>
       </form>
       {/* <Button variant='contained' onClick={getTokenId}>getID</Button> */}
     </StyledBox>
   );
 }
+
+const ReportWrapper = styled("div")`
+  max-width: 375px;
+  width: 100%;
+  margin: 0 auto;
+  padding-top: 64px;
+`;
+
+const ReportTitle = styled("div")`
+  margin: 18px 0;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+`;
+
+const UploadTitle = styled("div")`
+  font-size: 16px;
+  margin: 8px 0;
+  font-weight: 700;
+`;
+
+const UploadSection = styled("section")`
+  border: none;
+  margin: 0;
+  width: 100%;
+
+  * {
+    margin: 0;
+  }
+
+  aside {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+const ReportCategoryTitle = styled("div")`
+  font-size: 16px;
+  font-weight: 700;
+  margin: 20px 0;
+`;
+
+const ButtonBox = styled("div")`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  div {
+    width: 101px;
+    height: 48px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+const InfoButton = styled("div")`
+  ${({ active }: { active: boolean }) =>
+    active
+      ? css`
+          background-color: #5c90f7;
+          color: #fff;
+        `
+      : css`
+          background-color: #e0e0e0;
+          color: rgba(0, 0, 0, 0.54);
+        `}
+`;
+
+const ButtonCaution = styled("div")`
+  ${({ active }: { active: boolean }) =>
+    active
+      ? css`
+          background-color: #f3b06c;
+          color: #fff;
+        `
+      : css`
+          background-color: #e0e0e0;
+          color: rgba(0, 0, 0, 0.54);
+        `}
+`;
+
+const AlertButton = styled("div")`
+  ${({ active }: { active: boolean }) =>
+    active
+      ? css`
+          background-color: #eb585e;
+          color: #fff;
+        `
+      : css`
+          background-color: #e0e0e0;
+          color: rgba(0, 0, 0, 0.54);
+        `}
+`;
+
+const thumbsContainer: CSSProperties = {
+  display: "flex",
+  flexDirection: "row",
+  flexWrap: "wrap",
+};
+
+const thumb: CSSProperties = {
+  display: "inline-flex",
+  borderRadius: 2,
+  border: "1px solid #eaeaea",
+  boxSizing: "border-box",
+};
+
+const thumbInner: CSSProperties = {
+  display: "flex",
+  minWidth: 0,
+  overflow: "hidden",
+};
+
+const img: CSSProperties = {
+  display: "block",
+  width: "100%",
+  margin: "0 auto",
+  objectFit: "cover",
+};
+
+const test: CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  padding: "20px",
+  borderWidth: "1px",
+  borderRadius: "10px",
+  borderColor: "#eeeeee",
+  borderStyle: "dashed",
+  backgroundColor: "#fff",
+  color: "#bdbdbd",
+  outline: "none",
+  transition: "border .24s ease-in-out",
+  margin: "10px 0",
+};
+
+const DropContainer = styled(Box)`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+`;
+
+const StyledBox = styled(Box)``;
+
+const StyledMenuItem = styled(MenuItem)`
+  color: white;
+`;

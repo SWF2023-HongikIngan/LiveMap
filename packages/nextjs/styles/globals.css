@@ -2,15 +2,15 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities"; */
 
-/* @font-face {
+@font-face {
   font-family: "PretendardVariable";
   src: url("../public/fonts/PretendardVariable.woff2");
 }
 
-:root,
+/* :root,
 [data-theme] {
   background: hsl(var(--b2));
-}
+} */
 
 body {
   min-height: 100vh;
@@ -31,6 +31,7 @@ h4 {
   line-height: 1;
 }
 
+/* 
 p {
   margin: 1rem 0;
 }
