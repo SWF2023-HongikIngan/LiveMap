@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { css, keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
+import { CircularProgress, Skeleton } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Writer from "~~/components/Writer";
 import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
@@ -11,6 +12,7 @@ const DetailPage = () => {
   const {
     query: { id },
   } = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
 
   const [detailData, setDetailData] = useState({
     alertLevel: -1,
@@ -84,7 +86,18 @@ const DetailPage = () => {
   if (id === undefined) return null;
   return (
     <DetailWrapper>
-      <DetailImage src={detailData.image} />
+      {isLoading && (
+        <SkeletonElement>
+          <CircularProgress />
+        </SkeletonElement>
+      )}
+      <DetailImage
+        src={detailData.image}
+        onLoad={() => {
+          setIsLoading(false);
+        }}
+        style={{ display: isLoading ? "none" : "block" }}
+      />
       <DetailBox>
         <DetailInfo>
           <DetailDate>{formatTimestamp(detailData.timestamp)}</DetailDate>
@@ -309,4 +322,14 @@ const Badge = styled.div<{ delay: number }>`
   box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
   animation: ${floatAnimation} 2s infinite ease-in-out;
   animation-delay: ${props => props.delay}s;
+`;
+
+const SkeletonElement = styled.div`
+  border-radius: 30px;
+  width: 100%;
+  height: 327px;
+  background-color: #ccc; /* 스켈레톤의 배경색 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
