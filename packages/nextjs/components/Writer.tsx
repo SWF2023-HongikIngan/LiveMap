@@ -23,7 +23,7 @@ export default function Writer({ contractName, functionName, args, text }: any) 
 
   useEffect(() => {
     if (isSuccess === true) {
-      alert("Fact Checked! It will be reflected in a moment.");
+      alert("Succeed! It will be reflected in a moment.");
     }
   }, [isSuccess]);
 

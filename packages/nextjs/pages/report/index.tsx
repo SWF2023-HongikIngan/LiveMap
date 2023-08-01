@@ -88,7 +88,7 @@ function CreateNFTWhenContractExist() {
     setType(e.target.value);
   }
 
-  const { writeAsync } = useScaffoldContractWrite({
+  const { writeAsync, isSuccess } = useScaffoldContractWrite({
     contractName: "ERC721Token",
     functionName: "mintNFT",
     // For payable functions, expressed in ETH
@@ -124,7 +124,7 @@ function CreateNFTWhenContractExist() {
     const cid = await handleIpfs();
     console.log("write start");
     await writeAsync({ args: [address, cid, 0] });
-    router.push("/");
+    // router.push("/");
   }
 
   async function handleIpfs() {
@@ -148,6 +148,13 @@ function CreateNFTWhenContractExist() {
     console.log("ipfs end");
     return tokenURL;
   }
+
+  useEffect(() => {
+    if (isSuccess) {
+      alert("Succeed! It will be reflected in a moment.");
+      router.push("/");
+    }
+  }, [isSuccess, router]);
 
   useEffect(() => {
     const { geolocation } = navigator;
