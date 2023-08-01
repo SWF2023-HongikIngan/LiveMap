@@ -1,7 +1,11 @@
-import { useEffect, useRef } from "react";
+import { use, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 import mapboxgl from "mapbox-gl";
 import type { NextPage } from "next";
+import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
+import { useContractRead } from "wagmi";
+
+console.log(useScaffoldContractRead)
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
@@ -11,6 +15,24 @@ const Map: NextPage = () => {
   // const [lng, setLng] = useState(127);
   // const [lat, setLat] = useState(37.57);
   // const [zoom, setZoom] = useState(11);
+
+  const { data: totalReports } = useScaffoldContractRead({
+    contractName: "ERC721Token",
+    functionName: "getActiveNFT",
+    args: [],
+  });
+
+  console.log(totalReports)
+
+
+  // const { data, isError, isLoading } = useContractRead({
+  //   address: '0xecb504d39723b0be0e3a9aa33d646642d1051ee1',
+  //   abi: wagmigotchiABI,
+  //   functionName: 'getHunger',
+  // })
+
+  // console.log(data)
+
   const description = `
     <img class="info_image" src="/hole.png"/>
     <div class="info_box">
@@ -21,12 +43,17 @@ const Map: NextPage = () => {
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
+
+    
+    // console.log(data)
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/streets-v12",
       center: [127, 37.57],
       zoom: 11,
     });
+
+ 
 
     map.current.on("load", () => {
       map.current.addSource("information", {

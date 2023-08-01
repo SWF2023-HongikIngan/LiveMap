@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import Writer from "~~/components/Writer";
+import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
 
 const DetailPage = () => {
   const {
@@ -16,6 +18,28 @@ const DetailPage = () => {
     timestamp: 1690858903355,
     image: "/hole.png",
   });
+
+  const { data: report } = useScaffoldContractRead({
+    contractName: "ERC721Token",
+    functionName: "getActiveNFT",
+    args: [],
+  });
+
+  const { data: accountAddress6551 } = useScaffoldContractRead({
+    contractName: "ERC721Token",
+    functionName: "getAccountAddress",
+    args: [id, 0],
+  });
+  console.log("accountAddress6551");
+  console.log(accountAddress6551);
+
+  const { data: trueCoin } = useScaffoldContractRead({
+    contractName: "ERC20Token",
+    functionName: "balanceOf",
+    args: [accountAddress6551],
+  });
+  console.log("trueCoin");
+  console.log(trueCoin);
 
   const formatTimestamp = (timestamp: number): string => {
     const date = new Date(timestamp);
@@ -61,9 +85,10 @@ const DetailPage = () => {
       </DetailBox>
       <FactBox>
         <FactStatus>
-          <FactCount>10</FactCount>명이 사실이라 응답했어요.
+          <FactCount>{Number(trueCoin)}</FactCount>명이 사실이라 응답했어요.
         </FactStatus>
-        <FactButton>사실이에요!</FactButton>
+        {/* <FactButton></FactButton> */}
+        <Writer contractName={"ERC20Token"} functionName={"mint"} args={[accountAddress6551]} text={"사실이에요!"} />
       </FactBox>
 
       <BadgeWrapper>
