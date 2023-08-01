@@ -1,17 +1,20 @@
 // import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { type PublicClient, usePublicClient, type WalletClient, useWalletClient } from 'wagmi'
-import { providers } from 'ethers'
-import ethers from 'ethers'
-import contracts from '../generated/deployedContracts'
-import { type HttpTransport } from 'viem'
+import contracts from "../generated/deployedContracts";
 import { ipfsUploadImage, ipfsUploadMetadata } from "../utils/ipfsUpload";
 // import Image from "next/image";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
 import { Box, Button, Container, MenuItem, Select, TextField } from "@mui/material";
 import { styled } from "@mui/system";
+import { providers } from "ethers";
+import { ethers } from "ethers";
 import type { NextPage } from "next";
 import { useDropzone } from "react-dropzone";
+import { type HttpTransport } from "viem";
+import { type PublicClient, type WalletClient, useAccount, usePublicClient, useWalletClient } from "wagmi";
+import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
+
+console.log(ethers);
 
 const thumbsContainer = {
   display: "flex",
@@ -130,6 +133,24 @@ function CreateNFTWhenContractExist() {
 
   const [files, setFiles] = useState([]);
 
+  const { address, isConnecting, isDisconnected } = useAccount();
+
+  console.log(address, isConnecting, isDisconnected);
+
+  const { writeAsync, isLoading, isMining } = useScaffoldContractWrite({
+    contractName: "ERC721Token",
+    functionName: "mintNFT",
+    args: [address, "https://bafkreifpmyqppgkyk5fpkvst2pubyfubtyxwiit37iosfrfce6svwpllhe.ipfs.nftstorage.link/", 0],
+    // For payable functions, expressed in ETH
+    value: "0",
+    // The number of block confirmations to wait for before considering transaction to be confirmed (default : 1).
+    blockConfirmations: 1,
+    // The callback function to execute when the transaction is confirmed.
+    onBlockConfirmation: txnReceipt => {
+      console.log("Transaction blockHash", txnReceipt.blockHash);
+    },
+  });
+
   // const selectedCollection = useMinterLabStore(state => state.selectedCollection);
 
   // const { data: signer, isError, isLoading } = useSigner();
@@ -172,28 +193,24 @@ function CreateNFTWhenContractExist() {
     return () => files.forEach(file => URL.revokeObjectURL(file.preview));
   }, [files]);
 
-  
-
   function walletClientToSigner(walletClient: WalletClient) {
-    const { account, chain, transport } = walletClient
+    const { account, chain, transport } = walletClient;
     const network = {
       chainId: chain.id,
       name: chain.name,
       ensAddress: chain.contracts?.ensRegistry?.address,
-    }
-    const provider = new providers.Web3Provider(transport, network)
-    const signer = provider.getSigner(account.address)
-    return signer
+    };
+    const provider = new providers.Web3Provider(transport, network);
+    const signer = provider.getSigner(account.address);
+    return signer;
   }
-   
+
   /** Hook to convert a viem Wallet Client to an ethers.js Signer. */
   function useEthersSigner({ chainId }: { chainId?: number } = {}) {
-    const { data: walletClient } = useWalletClient({ chainId })
-    return () => (walletClient ? walletClientToSigner(walletClient) : undefined)
-    
+    const { data: walletClient } = useWalletClient({ chainId });
+    return () => (walletClient ? walletClientToSigner(walletClient) : undefined);
   }
   const signer = useEthersSigner();
-  
 
   async function handleIpfs(e) {
     e.preventDefault();
@@ -229,21 +246,24 @@ function CreateNFTWhenContractExist() {
     // console.log("NFT IPFS upload is completed, NFT is stored at : ", tokenURL);
 
     // token uri
-    // address 
+    // address
     // 721 mint
-    
 
     // ethers
-    
-    const ERC721 = contracts[338][0]['contracts']['ERC721Token'];
-    
-    const ERC721Contract = new ethers.Contract(ERC721.address, ERC721.abi, signer);
-    const mintTx = await ERC721Contract.mintNFT(signer.address, " ", 0);
-    const mintRc = await mintTx.wait();
 
+    // const ERC721 = contracts[338][0]["contracts"]["ERC721Token"];
 
+    // console.log(ERC721.address);
 
+    // const ERC721Contract = new ethers.Contract(ERC721.address, ERC721.abi, signer);
+    // const mintTx = await ERC721Contract.mintNFT(signer.address, " ", 0);
+    // const mintRc = await mintTx.wait();
 
+    // console.log(mintRc);
+
+    const result = await writeAsync();
+
+    console.log(result);
   }
 
   return (
