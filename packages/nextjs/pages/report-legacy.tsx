@@ -5,8 +5,8 @@ import { styled } from "@mui/system";
 import type { NextPage } from "next";
 import { useDropzone } from "react-dropzone";
 import { useAccount } from "wagmi";
-import { ipfsUploadImage, ipfsUploadMetadata } from "~~/utils/ipfsUpload";
 import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
+import { ipfsUploadImage, ipfsUploadMetadata } from "~~/utils/ipfsUpload";
 
 const ExampleUI: NextPage = () => {
   return (
