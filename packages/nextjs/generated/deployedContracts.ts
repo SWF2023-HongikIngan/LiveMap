@@ -448,7 +448,7 @@ const contracts = {
           ],
         },
         ERC20Token: {
-          address: "0x73D24645973820292195F5feA172724496f181B3",
+          address: "0x9c609665cEE377Df4e5b603754386F33Cd09E6e9",
           abi: [
             {
               inputs: [],
