@@ -8,6 +8,7 @@ import { useAccount } from "wagmi";
 import Writer from "~~/components/Writer";
 import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 import { ipfsUploadImage, ipfsUploadMetadata } from "~~/utils/ipfsUpload";
+import WriterIPFS from "~~/components/WriterIPFS";
 
 let ipfsCid = "bad";
 
@@ -94,8 +95,15 @@ function CreateNFTWhenContractExist() {
     setAlertLevel(level);
   };
 
-  async function handleIpfs(e) {
-    e.preventDefault();
+  async function handleType(e) {
+    console.log("wait ......")
+    setType(e.target.value);
+
+    await handleIpfs();
+  }
+
+  async function handleIpfs() {
+    // e.preventDefault();
 
     // alert(JSON.stringify(json));
 
@@ -182,7 +190,7 @@ function CreateNFTWhenContractExist() {
       </div>
 
       <form
-        onSubmit={handleIpfs}
+        // onSubmit={handleIpfs}
         style={{
           display: "flex",
           flexDirection: "column",
@@ -236,7 +244,8 @@ function CreateNFTWhenContractExist() {
             }}
             label="재난 종류"
             value={type}
-            onChange={(e: any) => setType(e.target.value)}
+            // onChange={(e: any) => setType(e.target.value)}
+            onChange={handleType}
           >
             <StyledMenuItem value={"heavyrain"}>호우</StyledMenuItem>
             <StyledMenuItem value={"fire"}>화재</StyledMenuItem>
@@ -245,7 +254,7 @@ function CreateNFTWhenContractExist() {
           </Select>
         </FormControl>
 
-        <Button
+        {/* <Button
           style={{
             padding: "10px 0",
             borderRadius: 30,
@@ -254,8 +263,8 @@ function CreateNFTWhenContractExist() {
           type="submit"
         >
           제보하기
-        </Button>
-        <Writer contractName={"ERC721Token"} functionName={"mintNFT"} args={[address, cid, 0]} />
+        </Button> */}
+        <WriterIPFS contractName={"ERC721Token"} functionName={"mintNFT"} args={[address, cid, 0]} />
       </form>
       {/* <Button variant='contained' onClick={getTokenId}>getID</Button> */}
     </StyledBox>
