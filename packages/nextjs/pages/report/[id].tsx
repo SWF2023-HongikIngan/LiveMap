@@ -3,8 +3,9 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { css, keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
-import { CircularProgress, Skeleton } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
+import BadgeModal from "~~/components/BadgeModal";
 import Writer from "~~/components/Writer";
 import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
 
@@ -13,6 +14,7 @@ const DetailPage = () => {
     query: { id },
   } = useRouter();
   const [isLoading, setIsLoading] = useState(true);
+  const [clickedBadge, setClickedBadge] = useState(-1);
 
   const [detailData, setDetailData] = useState({
     alertLevel: -1,
@@ -86,6 +88,7 @@ const DetailPage = () => {
   if (id === undefined) return null;
   return (
     <DetailWrapper>
+      {clickedBadge !== -1 && <BadgeModal clickedBadge={clickedBadge} setClickedBadge={setClickedBadge} />}
       {isLoading && (
         <SkeletonElement>
           <CircularProgress />
@@ -129,11 +132,16 @@ const DetailPage = () => {
       <BadgeWrapper>
         <Title>Earned Badges ✨</Title>
         <Swiper spaceBetween={10} slidesPerView={"auto"}>
-          {badges &&
+          {badges?.length > 0 ? (
             badges.map((item, index) => {
               return (
                 <SwiperSlide key={index} style={{ width: 108, padding: "20px 0 10px" }}>
-                  <Badge delay={index / 3}>
+                  <Badge
+                    delay={index / 3}
+                    onClick={() => {
+                      setClickedBadge(Number(item));
+                    }}
+                  >
                     <Image
                       src={`https://bafybeifymhdsrm624idcn3zafq7c4qdppc5mhes2o62ygzc2kzfy7mkgqm.ipfs.nftstorage.link/${Number(
                         item,
@@ -152,7 +160,10 @@ const DetailPage = () => {
                   </Badge>
                 </SwiperSlide>
               );
-            })}
+            })
+          ) : (
+            <NoBadge>Haven't earned any badges yet.</NoBadge>
+          )}
         </Swiper>
       </BadgeWrapper>
     </DetailWrapper>
@@ -333,3 +344,5 @@ const SkeletonElement = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
+const NoBadge = styled.div``;
