@@ -436,7 +436,7 @@ const StyledMenuItem = styled(MenuItem)`
 `;
 
 const Loading = styled("div")`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   background: rgba(255, 255, 255, 0.5);

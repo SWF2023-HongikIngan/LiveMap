@@ -41,7 +41,6 @@ const ModalWrapper = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  perspective: 500px;
 `;
 
 const ImageWrapper = styled.div`
@@ -51,7 +50,7 @@ const ImageWrapper = styled.div`
   flex-direction: column;
   background-color: white;
   border-radius: 30px;
-
+  transform-style: preserve-3d;
   animation: flip 5s linear infinite;
 
   @keyframes flip {
