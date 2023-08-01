@@ -27,7 +27,6 @@ contract ERC1155Token is ERC1155, Ownable {
 
     function mint(address account, uint256 id, bytes memory data)
         public
-        onlyOwner
     {
         require(!isMinted[account][id], "1 token to each id");
         _mint(account, id, 1, data);
