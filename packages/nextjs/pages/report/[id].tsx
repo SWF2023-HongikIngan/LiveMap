@@ -125,7 +125,6 @@ const DetailPage = () => {
                       src={`https://bafybeifymhdsrm624idcn3zafq7c4qdppc5mhes2o62ygzc2kzfy7mkgqm.ipfs.nftstorage.link/${Number(
                         item,
                       )}.png`}
-                      placeholder="blur"
                       width={107}
                       height={107}
                       alt="badge"
