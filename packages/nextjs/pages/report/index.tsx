@@ -1,16 +1,13 @@
-import { CSSProperties, useEffect, useRef, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { Box, Button, Container, FormControl, InputLabel, MenuItem, Select, TextField, css } from "@mui/material";
 import { styled } from "@mui/system";
 import type { NextPage } from "next";
 import { useDropzone } from "react-dropzone";
 import { useAccount } from "wagmi";
-import Writer from "~~/components/Writer";
 import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 import { ipfsUploadImage, ipfsUploadMetadata } from "~~/utils/ipfsUpload";
-import WriterIPFS from "~~/components/WriterIPFS";
-
-let ipfsCid = "bad";
 
 const ExampleUI: NextPage = () => {
   return (
@@ -36,27 +33,9 @@ function CreateNFTWhenContractExist() {
   const [files, setFiles] = useState([]);
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
-
-  const [cid, setCid] = useState("");
-
   const { address, isConnecting, isDisconnected } = useAccount();
-  // const cidRef = useRef("");
+  const router = useRouter();
 
-  // const { writeAsync, isLoading, isMining } = useScaffoldContractWrite({
-  //   contractName: "ERC721Token",
-  //   functionName: "mintNFT",
-  //   args: [address, cidRef.current, 0],
-  //   // For payable functions, expressed in ETH
-  //   value: "0",
-  //   // The number of block confirmations to wait for before considering transaction to be confirmed (default : 1).
-  //   blockConfirmations: 1,
-  //   // The callback function to execute when the transaction is confirmed.
-  //   onBlockConfirmation: txnReceipt => {
-  //     console.log("Transaction blockHash", txnReceipt.blockHash);
-  //   },
-  // });
-
-  // const { data: signer, isError, isLoading } = useSigner();
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } = useDropzone({
     maxFiles: 1,
     accept: {
@@ -70,8 +49,6 @@ function CreateNFTWhenContractExist() {
           }),
         ),
       );
-      // console.log(acceptedFiles);
-      // console.log(acceptedFiles[0]);
     },
   });
 
@@ -96,30 +73,34 @@ function CreateNFTWhenContractExist() {
   };
 
   async function handleType(e) {
-    console.log("wait ......")
     setType(e.target.value);
+  }
 
-    await handleIpfs();
+  const { writeAsync, isLoading, isMining } = useScaffoldContractWrite({
+    contractName: "ERC721Token",
+    functionName: "mintNFT",
+    // For payable functions, expressed in ETH
+    value: "0",
+    // The number of block confirmations to wait for before considering transaction to be confirmed (default : 1).
+    blockConfirmations: 1,
+    // The callback function to execute when the transaction is confirmed.
+    onBlockConfirmation: txnReceipt => {
+      console.log("Transaction blockHash", txnReceipt.blockHash);
+    },
+  });
+
+  async function Write() {
+    console.log("ipfs start");
+    const cid = await handleIpfs();
+    console.log("write start");
+    await writeAsync({ args: [address, cid, 0] });
+    router.push("/");
   }
 
   async function handleIpfs() {
-    // e.preventDefault();
-
-    // alert(JSON.stringify(json));
-
     const cid = await ipfsUploadImage(files);
-    // setImageCID(cid + "/" + files[0].name);
-
-    //`https://ipfs.io/ipfs/${imageCID}`
-
     const imageCID = `${cid}`;
-
-    // const image = `https://ipfs.io/ipfs/${imageCID}`;
     const image = `https://${imageCID}.ipfs.nftstorage.link`;
-    // const image = `https://${imageCID}`;
-    console.log(image);
-
-    // code to handle NFT metadata submission goes here
 
     const metadataForUpload = {
       alertLevel,
@@ -134,15 +115,9 @@ function CreateNFTWhenContractExist() {
 
     const tokenURI = await ipfsUploadMetadata(metadataForUpload);
     const tokenURL = `https://${tokenURI}.ipfs.nftstorage.link`;
-    // console.log("NFT IPFS upload is completed, NFT is stored at : ", `https://ipfs.io/ipfs/${tokenURI}`);
-    console.log("NFT IPFS upload is completed, NFT is stored at : ", tokenURL);
-
-    setCid(tokenURL);
-    // cidRef.current = tokenURL;
-    // ipfsCid = tokenURL;
-    // const result = await writeAsync();
-
-    // console.log(result);
+    // await setCid(tokenURL);
+    console.log("ipfs end");
+    return tokenURL;
   }
 
   useEffect(() => {
@@ -190,7 +165,6 @@ function CreateNFTWhenContractExist() {
       </div>
 
       <form
-        // onSubmit={handleIpfs}
         style={{
           display: "flex",
           flexDirection: "column",
@@ -244,7 +218,6 @@ function CreateNFTWhenContractExist() {
             }}
             label="재난 종류"
             value={type}
-            // onChange={(e: any) => setType(e.target.value)}
             onChange={handleType}
           >
             <StyledMenuItem value={"heavyrain"}>호우</StyledMenuItem>
@@ -253,20 +226,17 @@ function CreateNFTWhenContractExist() {
             <StyledMenuItem value={"collapse"}>붕괴</StyledMenuItem>
           </Select>
         </FormControl>
-
-        {/* <Button
+        <Button
           style={{
             padding: "10px 0",
             borderRadius: 30,
           }}
           variant="contained"
-          type="submit"
+          onClick={Write}
         >
           제보하기
-        </Button> */}
-        <WriterIPFS contractName={"ERC721Token"} functionName={"mintNFT"} args={[address, cid, 0]} />
+        </Button>
       </form>
-      {/* <Button variant='contained' onClick={getTokenId}>getID</Button> */}
     </StyledBox>
   );
 }
