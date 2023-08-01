@@ -114,7 +114,7 @@ const DetailPage = () => {
       </FactBox>
 
       <BadgeWrapper>
-        <Title>받은 뱃지 ✨</Title>
+        <Title>Earned Badges ✨</Title>
         <Swiper spaceBetween={10} slidesPerView={"auto"}>
           {badges &&
             badges.map((item, index) => {
