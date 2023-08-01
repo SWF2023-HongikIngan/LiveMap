@@ -102,6 +102,23 @@ function CreateNFTWhenContractExist() {
   });
 
   async function Write() {
+    if (type === 0) {
+      alert("Please select type");
+      return;
+    }
+    if (files.length === 0) {
+      alert("Please upload image");
+      return;
+    }
+    if (name === "") {
+      alert("Please input name");
+      return;
+    }
+    if (description === "") {
+      alert("Please input description");
+      return;
+    }
+
     setIsLoading(true);
     console.log("ipfs start");
     const cid = await handleIpfs();
@@ -143,8 +160,8 @@ function CreateNFTWhenContractExist() {
       },
       error => {
         console.warn("Fail to fetch current location", error);
-        setLat(37);
-        setLng(127);
+        setLat(37.567267);
+        setLng(127.009475);
       },
       {
         enableHighAccuracy: false,
@@ -237,7 +254,7 @@ function CreateNFTWhenContractExist() {
             inputProps={{
               id: "uncontrolled-native",
             }}
-            label="재난 종류"
+            label="Disaster type"
             value={type}
             onChange={handleType}
           >
