@@ -6,7 +6,7 @@ import { RainbowKitProvider, darkTheme, lightTheme } from "@rainbow-me/rainbowki
 import "@rainbow-me/rainbowkit/styles.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import NextNProgress from "nextjs-progressbar";
-import { Toaster } from "react-hot-toast";
+// import { Toaster } from "react-hot-toast";
 import { useDarkMode } from "usehooks-ts";
 import { WagmiConfig } from "wagmi";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
@@ -51,7 +51,7 @@ const ScaffoldEthApp = ({ Component, pageProps }: AppProps) => {
             </main>
             {/* <Footer /> */}
           </div>
-          <Toaster />
+          {/* <Toaster /> */}
         </RainbowKitProvider>
       </WagmiConfig>
     </ThemeProvider>
