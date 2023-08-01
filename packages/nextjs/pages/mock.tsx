@@ -1,5 +1,10 @@
 // import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { type PublicClient, usePublicClient, type WalletClient, useWalletClient } from 'wagmi'
+import { providers } from 'ethers'
+import ethers from 'ethers'
+import contracts from '../generated/deployedContracts'
+import { type HttpTransport } from 'viem'
 import { ipfsUploadImage, ipfsUploadMetadata } from "../utils/ipfsUpload";
 // import Image from "next/image";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
@@ -167,6 +172,29 @@ function CreateNFTWhenContractExist() {
     return () => files.forEach(file => URL.revokeObjectURL(file.preview));
   }, [files]);
 
+  
+
+  function walletClientToSigner(walletClient: WalletClient) {
+    const { account, chain, transport } = walletClient
+    const network = {
+      chainId: chain.id,
+      name: chain.name,
+      ensAddress: chain.contracts?.ensRegistry?.address,
+    }
+    const provider = new providers.Web3Provider(transport, network)
+    const signer = provider.getSigner(account.address)
+    return signer
+  }
+   
+  /** Hook to convert a viem Wallet Client to an ethers.js Signer. */
+  function useEthersSigner({ chainId }: { chainId?: number } = {}) {
+    const { data: walletClient } = useWalletClient({ chainId })
+    return () => (walletClient ? walletClientToSigner(walletClient) : undefined)
+    
+  }
+  const signer = useEthersSigner();
+  
+
   async function handleIpfs(e) {
     e.preventDefault();
     // console.log("handleIpfs");
@@ -203,8 +231,19 @@ function CreateNFTWhenContractExist() {
     // token uri
     // address 
     // 721 mint
+    
 
     // ethers
+    
+    const ERC721 = contracts[338][0]['contracts']['ERC721Token'];
+    
+    const ERC721Contract = new ethers.Contract(ERC721.address, ERC721.abi, signer);
+    const mintTx = await ERC721Contract.mintNFT(signer.address, " ", 0);
+    const mintRc = await mintTx.wait();
+
+
+
+
   }
 
   return (
