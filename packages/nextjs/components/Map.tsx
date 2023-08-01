@@ -379,30 +379,40 @@ const MapWrapper = styled.div`
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      .info_image {
-        width: 142px;
-        height: 142px;
-        object-fit: cover;
-        border-radius: 10px;
-      }
-      .info_box {
-        margin-top: 8px;
+      a {
+        display: block;
+        max-width: 158px;
         display: flex;
-        width: 100%;
-        justify-content: space-between;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
 
-        .info_box_title {
-          color: #000;
-          font-size: 12px;
-          line-height: 24px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        .enter_image {
-          width: 24px;
-          height: 24px;
+        .info_image {
+          width: 142px;
+          height: 142px;
           object-fit: cover;
+          border-radius: 10px;
+        }
+        .info_box {
+          margin-top: 8px;
+          display: flex;
+          width: 100%;
+          padding: 0 5px 0 10px;
+          justify-content: space-between;
+
+          .info_box_title {
+            color: #000;
+            font-size: 12px;
+            line-height: 24px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          .enter_image {
+            width: 24px;
+            height: 24px;
+            object-fit: cover;
+          }
         }
       }
     }
