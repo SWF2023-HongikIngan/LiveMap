@@ -50,8 +50,21 @@ const ImageWrapper = styled.div`
   flex-direction: column;
   background-color: white;
   border-radius: 30px;
-  transform-style: preserve-3d;
-  animation: flip 5s linear infinite;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+
+  animation: float 2s ease-in-out infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-30px);
+    }
+  }
+
+  /* animation: flip 4s linear infinite;
 
   @keyframes flip {
     0% {
@@ -63,7 +76,7 @@ const ImageWrapper = styled.div`
     100% {
       transform: rotateY(360deg);
     }
-  }
+  } */
 `;
 
 const BadgeTitle = styled.div`
