@@ -148,9 +148,7 @@ const Map: NextPage = () => {
       zoom: 11,
     });
 
-    console.log("1");
     map.current.on("load", () => {
-      console.log("2");
       map.current.addSource("information", {
         type: "geojson",
         data: {

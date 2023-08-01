@@ -1,6 +1,30 @@
 import { useState } from "react";
 import Image from "next/image";
+import { keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
+
+// keyframes를 사용해 회전 및 확대 애니메이션을 정의합니다.
+const appear = keyframes`
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1) rotate(1800deg);
+    opacity: 1;
+  }
+  75% {
+    transform: scale(1) rotate(1800deg);
+    opacity: 1;
+  }
+  90% {
+    transform: scale(1.2) rotate(1800deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(1800deg);
+  }
+`;
 
 export default function BadgeModal({ clickedBadge, setClickedBadge }: any) {
   const [isLoading, setIsLoading] = useState(true);
@@ -20,7 +44,7 @@ export default function BadgeModal({ clickedBadge, setClickedBadge }: any) {
           }}
         />
         <BadgeTitle>
-          {["침수/홍부 제보자", "사실이에요", "첫 제보자", "접수된 제보", "라이프 세이버"][Number(clickedBadge) - 1]}
+          {["침수/홍수 제보자", "사실이에요", "첫 제보자", "접수된 제보", "라이프 세이버"][Number(clickedBadge) - 1]}
         </BadgeTitle>
       </ImageWrapper>
     </ModalWrapper>
@@ -52,7 +76,9 @@ const ImageWrapper = styled.div`
   border-radius: 30px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 
-  animation: float 2s ease-in-out infinite;
+  animation: ${appear} 1s ease-out forwards;
+
+  /* animation: float 2s ease-in-out infinite;
 
   @keyframes float {
     0%,
@@ -61,20 +87,6 @@ const ImageWrapper = styled.div`
     }
     50% {
       transform: translateY(-30px);
-    }
-  }
-
-  /* animation: flip 4s linear infinite;
-
-  @keyframes flip {
-    0% {
-      transform: rotateY(0);
-    }
-    50% {
-      transform: rotateY(180deg);
-    }
-    100% {
-      transform: rotateY(360deg);
     }
   } */
 `;
