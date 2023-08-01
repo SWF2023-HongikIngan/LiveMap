@@ -1,7 +1,6 @@
 import * as React from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { WalletButton } from "./WalletButton";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
