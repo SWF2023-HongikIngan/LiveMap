@@ -69,7 +69,7 @@ export default function ResponsiveDrawer() {
           >
             <MenuItem onClick={() => handleClose("/")}>Home</MenuItem>
             <MenuItem onClick={() => handleClose("/report")}>Report</MenuItem>
-            <MenuItem onClick={() => handleClose("/")}>List</MenuItem>
+            <MenuItem onClick={() => handleClose("/list")}>List</MenuItem>
           </Menu>
           <ConnectButton label="CONNECT WALLET" />
         </Toolbar>
