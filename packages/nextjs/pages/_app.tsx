@@ -6,6 +6,7 @@ import { RainbowKitProvider, darkTheme, lightTheme } from "@rainbow-me/rainbowki
 import "@rainbow-me/rainbowkit/styles.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import NextNProgress from "nextjs-progressbar";
+import "swiper/css";
 import { useDarkMode } from "usehooks-ts";
 import { WagmiConfig } from "wagmi";
 import Appbar from "~~/components/Appbar";
