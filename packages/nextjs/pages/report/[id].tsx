@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import { Box, ImageList, ImageListItem } from "@mui/material";
 import Writer from "~~/components/Writer";
 import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
 
@@ -42,6 +43,22 @@ const DetailPage = () => {
   });
   console.log("trueCoin");
   console.log(trueCoin);
+
+  const { data: badges } = useScaffoldContractRead({
+    contractName: "ERC1155Token",
+    functionName: "getTokens",
+    args: [1, 0],
+  });
+
+  const { data: tokenURI } = useScaffoldContractRead({
+    contractName: "ERC1155Token",
+    functionName: "uri",
+    args: [1],
+  });
+
+  console.log(tokenURI);
+
+  console.log(badges);
 
   const formatTimestamp = (timestamp: number): string => {
     const date = new Date(timestamp);
@@ -95,6 +112,28 @@ const DetailPage = () => {
 
       <BadgeWrapper>
         <BadgeTitle>받은 뱃지 ✨</BadgeTitle>
+        <Box
+          sx={{
+            width: "100%",
+            height: 250, // set an appropriate height as per your requirements
+            overflowY: "auto",
+            display: "flex",
+          }}
+        >
+          <ImageList variant="masonry" sx={{ width: 375 }}  >
+            {badges &&
+              badges.map(item => (
+                <ImageListItem w key={item}>
+                  <img
+                    src={`https://bafybeibvb4l7i4noyonbsgau6tohlcmgms35sv2jf5ypvdbwa723hea45e.ipfs.nftstorage.link/${Number(
+                      item,
+                    )}.png`}
+                    loading="lazy"
+                  />
+                </ImageListItem>
+              ))}
+          </ImageList>
+        </Box>
       </BadgeWrapper>
     </DetailWrapper>
   );
