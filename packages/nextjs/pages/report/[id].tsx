@@ -10,55 +10,39 @@ const DetailPage = () => {
   const {
     query: { id },
   } = useRouter();
+
   const [detailData, setDetailData] = useState({
-    alertLevel: 0,
-    type: "flood",
-    name: "강남역 1번 출구 맨홀 뚜껑",
-    description:
-      "rolam ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper, odio sed ultricies tincidunt, nislnisl ultrices nunc, eget ultrices nisl nisl ut nisl. Donec ullamcorper, odio sed",
-    timestamp: 1690858903355,
-    image: "/hole.png",
+    alertLevel: -1,
+    type: "",
+    name: "",
+    description: "",
+    timestamp: 0,
+    image: "",
   });
 
-  const { data: report } = useScaffoldContractRead({
+  const { data: reports } = useScaffoldContractRead({
     contractName: "ERC721Token",
     functionName: "getActiveNFT",
     args: [],
   });
-
-  // console.log(report);
 
   const { data: accountAddress6551 } = useScaffoldContractRead({
     contractName: "ERC721Token",
     functionName: "getAccountAddress",
     args: [id, 0],
   });
-  // console.log("accountAddress6551");
-  // console.log(accountAddress6551);
 
   const { data: trueCoin } = useScaffoldContractRead({
     contractName: "ERC20Token",
     functionName: "balanceOf",
     args: [accountAddress6551],
   });
-  // console.log("trueCoin");
-  // console.log(trueCoin);
 
   const { data: badges } = useScaffoldContractRead({
     contractName: "ERC1155Token",
     functionName: "getTokens",
     args: [id, 0],
   });
-
-  // const { data: tokenURI } = useScaffoldContractRead({
-  //   contractName: "ERC1155Token",
-  //   functionName: "uri",
-  //   args: [id],
-  // });
-
-  // console.log(tokenURI);
-
-  // console.log(badges);
 
   const formatTimestamp = (timestamp: number): string => {
     const date = new Date(timestamp);
@@ -73,47 +57,33 @@ const DetailPage = () => {
 
   useEffect(() => {
     if (id === undefined) return;
-    // setDetailData(detailData 가져오기);
-    // report?[0].map((item, index) => {
-    //   if (Number(item) === id) {
-    //     console.log("item");
-    //     fetch(report[1][index]).then(res => {
-    //       res.json().then(data => {
-    //         console.log(data);
-    //         setDetailData(data);
-    //       });
-    //   });
-    // });
-    let index = 0;
-    // console.log(report[0]);
-    // if(report)
-    // report[0].map((item, idx) => {
-    //   // console.log(id)
-    //   // console.log(item);
-    //   // console.log(Number(item));
-    //   // console.log(id == Number(item))
-    //   if (Number(item) == id) {
-    //     index = idx;
-    //     console.log(index);
-    //   }
-    // });
+    if (reports === undefined) return;
 
-    // fetch(report[1][index])
-    //   .then(res => {
-    //     res.json().then(data => {
-    //       console.log(data);
-    //       // setDetailData(data);
-    //     });
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
-  }, [id]);
+    console.log("reports", reports);
+    console.log("accountAddress6551", accountAddress6551);
+    console.log("trueCoin", trueCoin);
+    const index = (reports[0] as any).findIndex((reports: any) => Number(reports) === Number(id));
+
+    fetch((reports[1] as any)[index])
+      .then(res => res.json())
+      .then(data => {
+        console.log("data", data);
+
+        setDetailData({
+          alertLevel: data.alertLevel,
+          type: data.type,
+          name: data.name,
+          description: data.description,
+          timestamp: Number(data.createdAt),
+          image: data.image,
+        });
+      });
+  }, [id, reports, accountAddress6551, trueCoin]);
 
   if (id === undefined) return null;
   return (
     <DetailWrapper>
-      <DetailImage src="/hole.png" />
+      <DetailImage src={detailData.image} />
       <DetailBox>
         <DetailInfo>
           <DetailDate>{formatTimestamp(detailData.timestamp)}</DetailDate>
@@ -139,7 +109,6 @@ const DetailPage = () => {
         <FactStatus>
           <FactCount>{Number(trueCoin)}</FactCount>명이 사실이라 응답했어요.
         </FactStatus>
-        {/* <FactButton></FactButton> */}
         <Writer contractName={"ERC20Token"} functionName={"mint"} args={[accountAddress6551]} text={"사실이에요!"} />
       </FactBox>
 
@@ -156,7 +125,7 @@ const DetailPage = () => {
           <ImageList variant="masonry" sx={{ width: 375 }}>
             {badges &&
               badges.map(item => (
-                <ImageListItem w key={item}>
+                <ImageListItem key={Number(item)}>
                   <img
                     src={`https://bafybeibvb4l7i4noyonbsgau6tohlcmgms35sv2jf5ypvdbwa723hea45e.ipfs.nftstorage.link/${Number(
                       item,
@@ -186,10 +155,12 @@ const DetailWrapper = styled.div`
 
 const DetailImage = styled.img`
   border-radius: 30px;
+  width: 100%;
 `;
 
 const DetailBox = styled.div`
   margin: 24px 0;
+  width: 100%;
 `;
 
 const DetailInfo = styled.div`
@@ -296,20 +267,6 @@ const FactCount = styled.div`
   color: #fff;
   margin-right: 4px;
   font-weight: 600;
-`;
-
-const FactButton = styled.div`
-  width: 126px;
-  height: 36px;
-  border-radius: 30px;
-  background: #000;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
 `;
 
 const BadgeWrapper = styled.div`
