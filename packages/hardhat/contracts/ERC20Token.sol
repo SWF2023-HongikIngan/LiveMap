@@ -10,7 +10,7 @@ contract ERC20Token is ERC20, ERC20Burnable {
     constructor() ERC20("TRUE", "TRUE") {
     }
 
-    function mint(address receiver, uint256 value) {
+    function mint(address receiver, uint256 value) public {
         require(balanceOf(receiver) == 0, "you can only mint 1 token to each address");
         _mint(receiver, value);
     }
