@@ -40,7 +40,15 @@ const ScaffoldEthApp = ({ Component, pageProps }: AppProps) => {
         <RainbowKitProvider
           chains={appChains.chains}
           avatar={BlockieAvatar}
-          theme={isDarkTheme ? darkTheme() : lightTheme()}
+          theme={
+            isDarkTheme
+              ? darkTheme({
+                  accentColor: "#000",
+                })
+              : lightTheme({
+                  accentColor: "#000",
+                })
+          }
         >
           <div>
             <Appbar />

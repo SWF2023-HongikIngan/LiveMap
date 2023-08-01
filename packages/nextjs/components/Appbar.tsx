@@ -6,6 +6,7 @@ import { IconButton, Menu, MenuItem } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export default function ResponsiveDrawer() {
   const router = useRouter();
@@ -61,7 +62,8 @@ export default function ResponsiveDrawer() {
             slotProps={{
               paper: {
                 sx: {
-                  backgroundColor: "white",
+                  backgroundColor: "#000",
+                  color: "#fff",
                 },
               },
             }}
@@ -70,7 +72,7 @@ export default function ResponsiveDrawer() {
             <MenuItem onClick={() => handleClose("/report")}>제보하기</MenuItem>
             <MenuItem onClick={() => handleClose("/")}>전체보기</MenuItem>
           </Menu>
-          <WalletButton />
+          <ConnectButton label="CONNECT WALLET" />
         </Toolbar>
       </AppBar>
     </Box>
