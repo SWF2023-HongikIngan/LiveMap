@@ -122,9 +122,10 @@ const Map: NextPage = () => {
                 properties: {
                   description: `
                   <a href="/report/${data.id}" class="enter_button">
-                    <img class="info_image" src=${data.data.image}/>
+                    <div class="skeleton" id="skeleton-${data.id}"></div>
+                    <img class="info_image" src=${data.data.image} onload="document.getElementById('skeleton-${data.id}').style.display='none'"/>
                     <div class="info_box">
-                    <div class="info_box_title">${data.data.name}</div>
+                      <div class="info_box_title">${data.data.name}</div>
                       <img class="enter_image" src="/right_arrow.png"/>
                     </div>
                   </a>
@@ -150,7 +151,8 @@ const Map: NextPage = () => {
                 properties: {
                   description: `
                   <a href="/report/${data.id}" class="enter_button">
-                    <img class="info_image" src=${data.data.image}/>
+                    <div class="skeleton" id="skeleton-${data.id}"></div>
+                    <img class="info_image" src=${data.data.image} onload="document.getElementById('skeleton-${data.id}').style.display='none'"/>
                     <div class="info_box">
                     <div class="info_box_title">${data.data.name}</div>
                       <img class="enter_image" src="/right_arrow.png"/>
@@ -178,7 +180,8 @@ const Map: NextPage = () => {
                 properties: {
                   description: `
                   <a href="/report/${data.id}" class="enter_button">
-                    <img class="info_image" src=${data.data.image}/>
+                    <div class="skeleton" id="skeleton-${data.id}"></div>
+                    <img class="info_image" src=${data.data.image} onload="document.getElementById('skeleton-${data.id}').style.display='none'"/>
                     <div class="info_box">
                     <div class="info_box_title">${data.data.name}</div>
                       <img class="enter_image" src="/right_arrow.png"/>
@@ -387,9 +390,21 @@ const MapWrapper = styled.div`
         justify-content: center;
         flex-direction: column;
 
+        .skeleton {
+          position: absolute;
+          width: 142px;
+          height: 142px;
+          display: block;
+          object-fit: cover;
+          border-radius: 10px;
+          top: 8px;
+          background-color: #ccc; /* 스켈레톤의 배경색 */
+        }
+
         .info_image {
           width: 142px;
           height: 142px;
+          display: block;
           object-fit: cover;
           border-radius: 10px;
         }
