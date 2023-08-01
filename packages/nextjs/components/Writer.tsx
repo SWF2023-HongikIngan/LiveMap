@@ -42,4 +42,7 @@ const FactButton = styled.div`
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
+  &:active {
+    transform: scale(0.9);
+  }
 `;

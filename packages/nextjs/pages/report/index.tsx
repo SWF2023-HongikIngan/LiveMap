@@ -264,16 +264,9 @@ function CreateNFTWhenContractExist() {
             <StyledMenuItem value={"collapse"}>Collapse</StyledMenuItem>
           </Select>
         </FormControl>
-        <Button
-          style={{
-            padding: "10px 0",
-            borderRadius: 30,
-          }}
-          variant="contained"
-          onClick={Write}
-        >
-          Report
-        </Button>
+        <SubmitButton variant="contained" onClick={Write}>
+          submit
+        </SubmitButton>
       </form>
     </StyledBox>
   );
@@ -457,5 +450,13 @@ const LoadingTitle = styled("div")`
 
   div {
     margin: 5px 0;
+  }
+`;
+
+const SubmitButton = styled(Button)`
+  padding: 10px 0;
+  border-radius: 30px;
+  &:active {
+    transform: scale(0.9);
   }
 `;
