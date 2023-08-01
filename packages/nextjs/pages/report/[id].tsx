@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/router";
-import { css } from "@emotion/react";
+import { css, keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Box, ImageList, ImageListItem } from "@mui/material";
+import { Swiper, SwiperSlide } from "swiper/react";
 import Writer from "~~/components/Writer";
 import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
 
@@ -113,29 +114,33 @@ const DetailPage = () => {
       </FactBox>
 
       <BadgeWrapper>
-        <BadgeTitle>받은 뱃지 ✨</BadgeTitle>
-        <Box
-          sx={{
-            width: "100%",
-            height: 250, // set an appropriate height as per your requirements
-            overflowY: "auto",
-            display: "flex",
-          }}
-        >
-          <ImageList variant="masonry" sx={{ width: 375 }}>
-            {badges &&
-              badges.map(item => (
-                <ImageListItem key={Number(item)}>
-                  <img
-                    src={`https://bafybeibvb4l7i4noyonbsgau6tohlcmgms35sv2jf5ypvdbwa723hea45e.ipfs.nftstorage.link/${Number(
-                      item,
-                    )}.png`}
-                    loading="lazy"
-                  />
-                </ImageListItem>
-              ))}
-          </ImageList>
-        </Box>
+        <Title>받은 뱃지 ✨</Title>
+        <Swiper spaceBetween={10} slidesPerView={"auto"}>
+          {badges &&
+            badges.map((item, index) => {
+              return (
+                <SwiperSlide key={index} style={{ width: 108, padding: "20px 0 10px" }}>
+                  <Badge delay={index / 3}>
+                    <Image
+                      src={`https://bafybeifymhdsrm624idcn3zafq7c4qdppc5mhes2o62ygzc2kzfy7mkgqm.ipfs.nftstorage.link/${Number(
+                        item,
+                      )}.png`}
+                      width={107}
+                      height={107}
+                      alt="badge"
+                    />
+                    <BadgeTitle>
+                      {
+                        ["침수/홍부 제보자", "사실이에요", "첫 제보자", "접수된 제보", "라이프 세이버"][
+                          Number(item) - 1
+                        ]
+                      }
+                    </BadgeTitle>
+                  </Badge>
+                </SwiperSlide>
+              );
+            })}
+        </Swiper>
       </BadgeWrapper>
     </DetailWrapper>
   );
@@ -276,7 +281,32 @@ const BadgeWrapper = styled.div`
   padding-top: 20px;
 `;
 
-const BadgeTitle = styled.div`
+const Title = styled.div`
   font-size: 16px;
   font-weight: 700;
+  margin-bottom: 15px;
+`;
+
+const BadgeTitle = styled.div`
+  text-align: center;
+  font-size: 12px;
+  font-weight: 400;
+  margin-top: 3px;
+`;
+
+const floatAnimation = keyframes`
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+`;
+
+const Badge = styled.div<{ delay: number }>`
+  width: 108px;
+  height: 138px;
+  border-radius: 10px;
+  border: 1px solid var(--light-action-focus-12-p, rgba(0, 0, 0, 0.12));
+  background: #fff;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
+  animation: ${floatAnimation} 2s infinite ease-in-out;
+  animation-delay: ${props => props.delay}s;
 `;
