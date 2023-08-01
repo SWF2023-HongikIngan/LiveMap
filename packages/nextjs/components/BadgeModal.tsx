@@ -9,20 +9,20 @@ const appear = keyframes`
     transform: scale(0) rotate(0deg);
     opacity: 0;
   }
-  70% {
-    transform: scale(1) rotate(1800deg);
+  80% {
+    transform: scale(1) rotate(3600deg);
     opacity: 1;
   }
-  75% {
-    transform: scale(1) rotate(1800deg);
+  85% {
+    transform: scale(1) rotate(3600deg);
     opacity: 1;
   }
   90% {
-    transform: scale(1.2) rotate(1800deg);
+    transform: scale(1.2) rotate(3600deg);
     opacity: 1;
   }
   100% {
-    transform: scale(1) rotate(1800deg);
+    transform: scale(1) rotate(3600deg);
   }
 `;
 
@@ -76,7 +76,7 @@ const ImageWrapper = styled.div`
   border-radius: 30px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 
-  animation: ${appear} 1s ease-out forwards;
+  animation: ${appear} 1.5s ease-out forwards;
 
   /* animation: float 2s ease-in-out infinite;
 
