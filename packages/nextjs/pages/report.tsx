@@ -4,6 +4,9 @@ import { Box, Button, Container, FormControl, InputLabel, MenuItem, Select, Text
 import { styled } from "@mui/system";
 import type { NextPage } from "next";
 import { useDropzone } from "react-dropzone";
+import { useAccount } from "wagmi";
+import { ipfsUploadImage, ipfsUploadMetadata } from "~~/utils/ipfsUpload";
+import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
 const ExampleUI: NextPage = () => {
   return (
@@ -29,6 +32,24 @@ function CreateNFTWhenContractExist() {
   const [files, setFiles] = useState([]);
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
+
+  const [cid, setCid] = useState("");
+
+  const { address, isConnecting, isDisconnected } = useAccount();
+
+  const { writeAsync, isLoading, isMining } = useScaffoldContractWrite({
+    contractName: "ERC721Token",
+    functionName: "mintNFT",
+    args: [address, cid, 0],
+    // For payable functions, expressed in ETH
+    value: "0",
+    // The number of block confirmations to wait for before considering transaction to be confirmed (default : 1).
+    blockConfirmations: 1,
+    // The callback function to execute when the transaction is confirmed.
+    onBlockConfirmation: txnReceipt => {
+      console.log("Transaction blockHash", txnReceipt.blockHash);
+    },
+  });
 
   // const { data: signer, isError, isLoading } = useSigner();
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } = useDropzone({
@@ -69,19 +90,47 @@ function CreateNFTWhenContractExist() {
     setAlertLevel(level);
   };
 
-  const handleIpfs = () => {
-    const json = {
+  async function handleIpfs(e) {
+    e.preventDefault();
+
+    // alert(JSON.stringify(json));
+
+    const cid = await ipfsUploadImage(files);
+    // setImageCID(cid + "/" + files[0].name);
+
+    //`https://ipfs.io/ipfs/${imageCID}`
+
+    const imageCID = `${cid}`;
+
+    // const image = `https://ipfs.io/ipfs/${imageCID}`;
+    const image = `https://${imageCID}.ipfs.nftstorage.link`;
+    // const image = `https://${imageCID}`;
+    console.log(image);
+
+    // code to handle NFT metadata submission goes here
+
+    const metadataForUpload = {
       alertLevel,
       type,
       name,
       description,
-      image: "곧 올라갈 예정",
+      image: image,
       createdAt: Date.now(),
       lat,
       lng,
     };
-    alert(JSON.stringify(json));
-  };
+
+    const tokenURI = await ipfsUploadMetadata(metadataForUpload);
+    const tokenURL = `https://${tokenURI}.ipfs.nftstorage.link`;
+    // console.log("NFT IPFS upload is completed, NFT is stored at : ", `https://ipfs.io/ipfs/${tokenURI}`);
+    console.log("NFT IPFS upload is completed, NFT is stored at : ", tokenURL);
+
+    setCid(tokenURL);
+
+    const result = await writeAsync();
+
+    console.log(result);
+  }
 
   useEffect(() => {
     const { geolocation } = navigator;
