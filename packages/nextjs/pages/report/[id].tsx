@@ -26,39 +26,39 @@ const DetailPage = () => {
     args: [],
   });
 
-  console.log(report);
+  // console.log(report);
 
   const { data: accountAddress6551 } = useScaffoldContractRead({
     contractName: "ERC721Token",
     functionName: "getAccountAddress",
     args: [id, 0],
   });
-  console.log("accountAddress6551");
-  console.log(accountAddress6551);
+  // console.log("accountAddress6551");
+  // console.log(accountAddress6551);
 
   const { data: trueCoin } = useScaffoldContractRead({
     contractName: "ERC20Token",
     functionName: "balanceOf",
     args: [accountAddress6551],
   });
-  console.log("trueCoin");
-  console.log(trueCoin);
+  // console.log("trueCoin");
+  // console.log(trueCoin);
 
   const { data: badges } = useScaffoldContractRead({
     contractName: "ERC1155Token",
     functionName: "getTokens",
-    args: [1, 0],
+    args: [id, 0],
   });
 
-  const { data: tokenURI } = useScaffoldContractRead({
-    contractName: "ERC1155Token",
-    functionName: "uri",
-    args: [1],
-  });
+  // const { data: tokenURI } = useScaffoldContractRead({
+  //   contractName: "ERC1155Token",
+  //   functionName: "uri",
+  //   args: [id],
+  // });
 
-  console.log(tokenURI);
+  // console.log(tokenURI);
 
-  console.log(badges);
+  // console.log(badges);
 
   const formatTimestamp = (timestamp: number): string => {
     const date = new Date(timestamp);
@@ -73,8 +73,41 @@ const DetailPage = () => {
 
   useEffect(() => {
     if (id === undefined) return;
-
     // setDetailData(detailData 가져오기);
+    // report?[0].map((item, index) => {
+    //   if (Number(item) === id) {
+    //     console.log("item");
+    //     fetch(report[1][index]).then(res => {
+    //       res.json().then(data => {
+    //         console.log(data);
+    //         setDetailData(data);
+    //       });
+    //   });
+    // });
+    let index = 0;
+    // console.log(report[0]);
+    // if(report)
+    // report[0].map((item, idx) => {
+    //   // console.log(id)
+    //   // console.log(item);
+    //   // console.log(Number(item));
+    //   // console.log(id == Number(item))
+    //   if (Number(item) == id) {
+    //     index = idx;
+    //     console.log(index);
+    //   }
+    // });
+
+    // fetch(report[1][index])
+    //   .then(res => {
+    //     res.json().then(data => {
+    //       console.log(data);
+    //       // setDetailData(data);
+    //     });
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
   }, [id]);
 
   if (id === undefined) return null;
@@ -120,7 +153,7 @@ const DetailPage = () => {
             display: "flex",
           }}
         >
-          <ImageList variant="masonry" sx={{ width: 375 }}  >
+          <ImageList variant="masonry" sx={{ width: 375 }}>
             {badges &&
               badges.map(item => (
                 <ImageListItem w key={item}>
