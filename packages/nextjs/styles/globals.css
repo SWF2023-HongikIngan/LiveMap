@@ -2,7 +2,7 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities"; */
 
-@font-face {
+/* @font-face {
   font-family: "PretendardVariable";
   src: url("../public/fonts/PretendardVariable.woff2");
 }
@@ -41,4 +41,4 @@ p {
 
 .btn.btn-ghost {
   @apply shadow-none;
-}
+} */
