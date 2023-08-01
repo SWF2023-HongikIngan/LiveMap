@@ -17,6 +17,7 @@ contract ERC20Token is ERC20, ERC20Burnable {
     function mint(address receiver) public {
         require(!isMinted[msg.sender][receiver], "You can mint only 1 token to each account");
         _mint(receiver, 1);
+        isMinted[msg.sender][receiver] = true;
     }
 
 }
