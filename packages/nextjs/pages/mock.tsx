@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import contracts from "../generated/deployedContracts";
 import { ipfsUploadImage, ipfsUploadMetadata } from "../utils/ipfsUpload";
 // import Image from "next/image";
-import TextareaAutosize from "@mui/base/TextareaAutosize";
+import { TextareaAutosize } from "@mui/base/TextareaAutosize";
 import { Box, Button, Container, MenuItem, Select, TextField } from "@mui/material";
 import { styled } from "@mui/system";
 import { providers } from "ethers";
